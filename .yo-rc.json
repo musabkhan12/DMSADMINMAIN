@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "18.20.4",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.19.0",
+    "libraryName": "dms-admin",
+    "libraryId": "f1c5454f-2a16-441e-8682-f805de61ae49",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "dms-admin",
+    "solutionShortDescription": "dms-admin description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
