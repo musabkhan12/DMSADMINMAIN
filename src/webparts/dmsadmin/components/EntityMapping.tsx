@@ -263,7 +263,7 @@ const [refresh,setRefresh]=React.useState(false);
         
   return (
 <>
-<div className={styles.maincont}>'
+<div className={styles.maincont}>
                 {showFirstDiv ? (
         // <div className={styles.argform}>
         //   <header>
@@ -356,43 +356,40 @@ const [refresh,setRefresh]=React.useState(false);
         //   </div>
         // </div>
         <div className={styles.argform}>
-        <header>
-          <div className={styles.title}>Mapped Entity</div>
+                <div className='row'>
+                  <div className='col-sm-7 pt-0'>
+          <div className='page-title fw-bold mb-1 font-20'>Mapped Entity</div>
+           </div>
+           <div className='col-sm-5 pt-0'>
+            <div className='padd-right1 mt-0'>
           <div className={styles.actions}>
-            {/* <a className={styles.backbuttonform}>
-              <img
-                className={styles.backimg}
-              //   src={require("../assets/left.png")}
-              />
-              <p className={styles.Addtext}>Back</p>
-            </a> */}
+           
             <a
               onClick={handleButtonClickShow}
               className={styles.addbuttonargform}
             >
-              <img
-                className={styles.addimg}
-                src={require("../assets/plus.png")}
-              />
+            
               <p className={styles.Addtext}>Create New</p>
             </a>
           </div>
-        </header>
-        <div className={styles.container}>
-          <table className={styles["event-table"]}>
+          </div>
+          </div>
+        </div>
+        <div style={{padding:'15px', marginTop:'20px'}} className={styles.container}>
+                 <table className="mtbalenew">
 
             <thead>
               <tr>
                 {/* <th className={styles.serialno}>S.No.</th> */}
-                <th className="tableheadtitle" style={{ borderBottomLeftRadius: '10px', minWidth: '50px', maxWidth: '50px', borderTopLeftRadius: '10px' }}>
+                <th  style={{ borderBottomLeftRadius: '0px', minWidth: '50px', maxWidth: '50px', borderTopLeftRadius: '0px' }}>
                     
-                    <div className="d-flex pb-2">
+                    <div className="">
                       <span>S.No.</span>
                       <span onClick={() => handleSortChange('SNo')}>
                         <FontAwesomeIcon icon={faSort} />
                       </span>
                     </div>
-                    <div className="bd-highlight">
+                    {/* <div className="bd-highlight">
                       <input
                         type="text"
                         placeholder="index"
@@ -400,18 +397,18 @@ const [refresh,setRefresh]=React.useState(false);
                         className="inputcss"
                         style={{ width: '100%' }}          
                       />
-                    </div>
+                    </div> */}
                   </th>
                 {/* <th className={styles.tabledept}>Entity</th> */}
-                <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                    <div className="d-flex pb-2" >
-                      <span >Entity</span> 
+                <th >
+                    
+                    <div className="" >
+                      <span >Entity</span> &nbsp;
                       <span className="Sorting" onClick={() => handleSortChange('Title')}>
                         <FontAwesomeIcon icon={faSort} /> 
                       </span>
                     </div>
-                    <div className=" bd-highlight">
+                    {/* <div className=" bd-highlight">
                       <input 
                         type="text" 
                         placeholder="Filter by Entity" 
@@ -419,19 +416,19 @@ const [refresh,setRefresh]=React.useState(false);
                         className='inputcss' 
                         style={{ width: '100%' }} 
                       />
-                    </div>
-                    </div>
+                    </div> */}
+                    
                 </th>
                 {/* <th  className={styles.tabledept}>Devision</th> */}
-                <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                    <div className="d-flex pb-2" >
-                      <span >Division</span> 
+                <th>
+                   
+                    <div className="" >
+                      <span >Division</span> &nbsp;
                       <span className="Sorting" onClick={() => handleSortChange('Title')}>
                         <FontAwesomeIcon icon={faSort} /> 
                       </span>
                     </div>
-                    <div className=" bd-highlight">
+                    {/* <div className=" bd-highlight">
                       <input 
                         type="text" 
                         placeholder="Filter by Division" 
@@ -439,19 +436,19 @@ const [refresh,setRefresh]=React.useState(false);
                         className='inputcss' 
                         style={{ width: '100%' }} 
                       />
-                    </div>
-                    </div>
+                    </div> */}
+                 
                 </th>
                 {/* <th className={styles.tabledept}>Department</th> */}
-                <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                    <div className="d-flex pb-2" >
-                      <span >Department</span> 
+                <th>
+                  
+                    <div className="" >
+                      <span >Department</span> &nbsp; 
                       <span className="Sorting" onClick={() => handleSortChange('Title')}>
                         <FontAwesomeIcon icon={faSort} /> 
                       </span>
                     </div>
-                    <div className=" bd-highlight">
+                    {/* <div className=" bd-highlight">
                       <input 
                         type="text" 
                         placeholder="Filter by Department" 
@@ -459,65 +456,89 @@ const [refresh,setRefresh]=React.useState(false);
                         className='inputcss' 
                         style={{ width: '100%' }} 
                       />
-                    </div>
-                    </div>
+                    </div> */}
+                    
                 </th>
-                <th className={styles.tabledept}>IsActive</th>
-                <th className={styles.tabledept}>Created At</th>
+                <th style={{minWidth: '70px', maxWidth: '70px' }}>
+                  <div className="" >
+                      <span >IsActive</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    </th>
+               
+                    <th>
+                  <div className="" >
+                      <span >Created At</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    </th>
                 {/* <th className={styles.tabledept}>Created By</th> */}
-                <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                      <div className="d-flex pb-2" >
-                        <span >	Created By</span>  
+                <th>
+                  
+                      <div className="" >
+                        <span >	Created By</span>  &nbsp;
                         <span 
                           onClick={() => handleSortChange('Title')}>
                               <FontAwesomeIcon icon={faSort} /> 
                         </span>
                       </div>
-                        <div className=" bd-highlight">
+                        {/* <div className=" bd-highlight">
                           <input 
                             type="text" 
                             placeholder="Filter by User" 
                             onChange={(e) => handleFilterChange(e, 'CurrentUser')}
                             className='inputcss' 
                             style={{ width: '100%' }} />
-                        </div>
-                      </div>
+                        </div> */}
+                   
                   </th>
-                <th className={styles.editdeleteicons}>Action</th>
+                  <th style={{ borderBottomLeftRadius: '0px', minWidth: '70px', maxWidth: '70px', borderTopLeftRadius: '0px' }}>
+                    
+                    <div className="" >
+                        <span >Action</span> 
+                    
+                      </div>
+                      {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                      </th>
               </tr>
             </thead>
             <tbody>
               {currentData.map((item, index) => (
                   <React.Fragment key={item.UniqueId}>
-                  <tr className={styles.tabledata}>
-                      <td className={styles.serialno}>
-                      {/* &nbsp; &nbsp; {index + 1} */}
+                  <tr>
+                  <td style={{ borderBottomLeftRadius: '0px', minWidth: '50px', maxWidth: '50px', borderTopLeftRadius: '0px' }}>
+                  <span className='indexdesign'>
                       {(currentPage - 1) * itemsPerPage + index + 1}
+                      </span>
                       </td>
-                      <td className={styles.tabledept}>
+                      <td>
                       {item.Entitylookup?.Title || 'No Title'}
                       </td>
-                      <td className={styles.tabledept}>
+                      <td>
                       {item.Devisionlookup?.Title || ''}
                       </td>
-                      <td className={styles.tabledept} title={item.SiteURL}>
+                      <td  title={item.SiteURL}>
                       {item.Departmentlookup?.Title || ''}
                       </td>
-                      <td className={styles.tablename}>
-                      {item.Entitylookup?.Active === "Yes" ? 'Active' : 'Inactive'}
-                      </td>
-                      <td className={styles.tabledept}>
+                      <td style={{minWidth: '70px', maxWidth: '70px' }}>
+                          <div className='stausbg'>
+                          {item.Entitylookup?.Active === "Yes" ? 'Active' : 'Inactive'}
+                        </div>
+                        </td>
+                     
+                      <td >
                       {/* {item.Created || 'No Date'} */}
                       {format(new Date(item.Created), 'MMM dd, yyyy') || 'No Date'}
                       </td>
-                      <td className={styles.tabledept}>
+                      <td>
                       {item.Author?.Title || 'No Author'}
                       </td>
-                      <td className={styles.editdeleteicons}>
-                      <img
-                          className={styles.editdicon}
-                          src={require("../assets/edit.svg")}
+                      <td style={{ borderBottomLeftRadius: '0px', minWidth: '70px', maxWidth: '70px', borderTopLeftRadius: '0px' }}>
+                        <img
+                          className='editicon1'
+                          src={require("../assets/edit.png")}
                           alt="Edit"
                           onClick={() => handleEditClick(item)}
                       />
@@ -549,10 +570,14 @@ const [refresh,setRefresh]=React.useState(false);
       </div>
       ) : (
         <div className={styles.argform}>
-          <header style={{marginBottom:"20px"}}>
-            <div className={styles.title}>Create Mapping 2</div>
-            <div className={styles.actions}>
-              <a
+          <div className='row' style={{marginBottom:"20px"}}>
+          <div className="col-md-7">
+            <div className="page-title fw-bold mb-1 font-20">Create Mapping 2</div>
+            </div>
+            <div className="col-md-5">
+              <div className='padd-right1 mt-0'>
+              <div className={styles.actions}>
+              <a style={{marginBottom:'20px'}}
                 className={styles.backbuttonform}
                 onClick={handleBackButtonClick}
               >
@@ -563,7 +588,13 @@ const [refresh,setRefresh]=React.useState(false);
                 <p className={styles.Addtext}>Back</p>
               </a>
             </div>
-          </header>
+
+              </div>
+
+
+
+            
+          </div>
           {/* <EntityMapping
             currentId={currentEntityId}
             currentEntity={currentEntity}
@@ -586,7 +617,7 @@ const [refresh,setRefresh]=React.useState(false);
             }}
           /> }
         </div>
-
+        </div>
       )}
                 </div>
 </>

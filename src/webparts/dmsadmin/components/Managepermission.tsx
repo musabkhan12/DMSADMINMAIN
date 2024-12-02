@@ -349,19 +349,20 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
 
   return (
  <>
-   <div className={styles.maincont}>'
+   <div className={styles.maincont}>
               {activeComponent === '' && (
                     <div className={styles.argform}>
-                        <header>
-                        <div className={styles.title}>{props.selectedEntityForPermission.value} &gt; {props.selectedGropuForPermission.value}
+                        <div className='row'>
+                        <div className='col-md-7 pt-0'>
+                        <div className='page-title fw-bold mb-0 font-20'>{props.selectedEntityForPermission.value} &gt; {props.selectedGropuForPermission.value}
+                       
                         </div>
-                        {/* <div style={{
-                            display:"flex"
-                        }}>
-                            <button type="button" onClick={handleToggleAddUsers}>
-                                Add User
-                            </button>
-                        </div> */}
+                        <div>
+                            <span className='text-muted font-14'>{description}</span>
+                        </div>
+                        </div>
+                        <div className='col-sm-5'>
+                          <div className='padd-right1 mt-0'>
                         <div className={styles.actions}>
                             <a className={styles.backbuttonform}
                                 onClick={props.onBack}
@@ -371,31 +372,26 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                                 />
                                 <p className={styles.Addtext}>Back</p>
                             </a>
-                            {/* <button type="button" onClick={handleToggleAddUsers}>
-                                Add User
-                            </button> */}
+                         
                         </div>
-                        </header>
-                        <div>
-                            <span style={{
-                                color:"Black"
-                            }}>{description}</span>
                         </div>
-                        <div className={styles.container}>
-                        <table className={styles["event-table"]}>
+                        </div></div>
+                       
+                        <div style={{padding:'15px', marginTop:'15px'}} className={styles.container}>
+                        <table className='mtbalenew'>
 
                             <thead>
                             <tr>
                                 {/* <th className={styles.serialno}>S.No.</th> */}
-                                <th className="tableheadtitle" style={{ borderBottomLeftRadius: '10px', minWidth: '50px', maxWidth: '50px', borderTopLeftRadius: '10px' }}>
+                                <th style={{  minWidth: '55px', maxWidth: '55px' }}>
                     
-                                  <div className="d-flex pb-2">
+                                  <div className="">
                                     <span>S.No.</span>
                                     <span onClick={() => handleSortChange('SNo')}>
                                       <FontAwesomeIcon icon={faSort} />
                                     </span>
                                   </div>
-                                  <div className="bd-highlight">
+                                  {/* <div className="bd-highlight">
                                     <input
                                       type="text"
                                       placeholder="index"
@@ -403,18 +399,18 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                                       className="inputcss"
                                       style={{ width: '100%' }}          
                                     />
-                                  </div>
+                                  </div> */}
                                 </th>
                                 {/* <th className={styles.tabledept}>User</th> */}
-                                <th className="tableheadtitle" >
-                                  <div className="d-flex flex-column bd-highlight ">
-                                  <div className="d-flex pb-2" >
-                                    <span >User</span> 
+                                <th  >
+                                  <div >
+                                  <div  >
+                                    <span >User</span> &nbsp;&nbsp;
                                     <span className="Sorting" onClick={() => handleSortChange('Title')}>
                                       <FontAwesomeIcon icon={faSort} /> 
                                     </span>
                                   </div>
-                                  <div className=" bd-highlight">
+                                  {/* <div className=" bd-highlight">
                                     <input 
                                       type="text" 
                                       placeholder="Filter by User" 
@@ -422,19 +418,19 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                                       className='inputcss' 
                                       style={{ width: '100%' }} 
                                     />
-                                  </div>
+                                  </div> */}
                                   </div>
                                 </th>
                                 {/* <th  className={styles.tabledept}>Email</th> */}
-                                <th className="tableheadtitle" >
-                                  <div className="d-flex flex-column bd-highlight ">
-                                  <div className="d-flex pb-2" >
-                                    <span >Email</span> 
+                                <th  >
+                                  <div >
+                                  <div >
+                                    <span >Email</span> &nbsp;&nbsp;
                                     <span className="Sorting" onClick={() => handleSortChange('Title')}>
                                       <FontAwesomeIcon icon={faSort} /> 
                                     </span>
                                   </div>
-                                  <div className=" bd-highlight">
+                                  {/* <div className=" bd-highlight">
                                     <input 
                                       type="text" 
                                       placeholder="Filter by Email" 
@@ -442,30 +438,31 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                                       className='inputcss' 
                                       style={{ width: '100%' }} 
                                     />
-                                  </div>
+                                  </div> */}
                                   </div>
                                 </th>
-                                <th className={styles.editdeleteicons}>Action</th>
+                                <th style={{minWidth:'65px', maxWidth:'65px'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {currentData.map((item:any, index:any) => (
                                 <React.Fragment key={item.Id}>
-                                <tr className={styles.tabledata}>
-                                    <td className={styles.serialno}>
-                                    {/* &nbsp; &nbsp; {index + 1} */}
+                                <tr >
+                                    <td style={{minWidth:'55px', textAlign:'center', maxWidth:'55px'}} >
+                                  <span style={{marginLeft:'45px'}} className='indexdesign'>
                                     {(currentPage - 1) * itemsPerPage + index + 1}
+                                    </span>
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td >
                                     {item.Title || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td >
                                     {item.Email || ''}
                                     </td>
-                                    <td className={styles.editdeleteicons}>
+                                    <td style={{minWidth:'65px', maxWidth:'65px'}}>
                                     <img
                                         className={styles.deleteicon}
-                                        src={require("../assets/delete.png")}
+                                        src={require("../assets/del.png")}
                                         alt="Delete"
                                         onClick={(event)=>{
                                             handleDeleteUser(item.Id,item.Title)
@@ -502,7 +499,7 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                       marginTop:"50px",
                       padding:"20px",
                       border:"2px solid #54ade0",
-                      borderRadius:"10px",
+                      borderRadius:"20px",
                       background:"#fff",
 
                     }}>

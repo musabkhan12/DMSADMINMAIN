@@ -182,19 +182,20 @@ export const ManageSuper = (props:any) => {
                     <div className={styles.argform}>
                         <div className='row'>
                             <div className='col-md-7'>
-                            <div className={styles.title}>Admin Panel &gt; Manage Super Admin
+                            <div className='page-title fw-bold mb-0 font-20'>Admin Panel &gt; Manage Super Admin
                             </div>
-                            <div className='mb-2 mt-1'>
+                            <div className='mb-2 mt-0'>
                             <span className='text-muted font-14' style={{
                                 color:"Black"
                             }}>User From Super Admin Group Will Have Full Control 1.</span>
                         </div>
                             </div>
-                            <div className='col-md-5 '>
+                            <div className='col-md-5'>
                             <div className='justify-content-end'>
-                                <div className='padd-right'>
-                            <button  style={{
-                                float:"right", padding:"8px 12px"
+                                <div className='padd-right1 mt-0'>
+                                    
+                            <button  style={{height:'40px', borderRadius:'4px', padding:'9px 10px'
+                        
                             }}type="button" className='btn btn-primary' onClick={handleToggleAddUsers}>
                                 Add User
                             </button>
@@ -215,34 +216,33 @@ export const ManageSuper = (props:any) => {
                         
                         </div>
                        
-                        <div className={styles.container}>
-                        <table className={styles["event-table"]}>
-
+                        <div style={{padding:'15px'}} className={styles.container}>
+                        <table className="mtbalenew">
                             <thead>
                             <tr>
-                                <th className={styles.serialno}>S.No.</th>
-                                <th className={styles.tabledept}>User</th>
-                                <th  className={styles.tabledept}>Email</th>
-                                <th className={styles.editdeleteicons}>Action</th>
+                                <th style={{minWidth:'20px',maxWidth:'20px'}}>S.No.</th>
+                                <th style={{minWidth:'80px',maxWidth:'80px'}}>User</th>
+                                <th>Email</th>
+                                <th style={{minWidth:'40px',maxWidth:'40px'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {selectedUser.map((item:any, index:any) => (
                                 <React.Fragment key={item.Id}>
-                                <tr className={styles.tabledata}>
-                                    <td className={styles.serialno}>
-                                    &nbsp; &nbsp; {index + 1}
+                                <tr>
+                                    <td style={{minWidth:'20px',maxWidth:'20px'}}>
+                                    <span className='indexdesign'> {index + 1}</span>
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td style={{minWidth:'80px',maxWidth:'80px'}}>
                                     {item.Title || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td >
                                     {item.Email || ''}
                                     </td>
-                                    <td className={styles.editdeleteicons}>
+                                    <td style={{minWidth:'40px',maxWidth:'40px'}}>
                                     <img
                                         className={styles.deleteicon}
-                                        src={require("../assets/delete.png")}
+                                        src={require("../assets/del.png")}
                                         alt="Delete"
                                         onClick={(event)=>{
                                             handleDeleteUser(item.Id,item.Title)
@@ -268,7 +268,7 @@ export const ManageSuper = (props:any) => {
                     <div className={styles.title}>Admin Panel &gt; Manage Super Admin &gt; Add Super Admin</div>
                     </div>
                     <div className='col-md-5'>
-                    <div className='padd-right'>
+                    <div className='padd-right1 mt-0'>
                         <button style={{display:"inline-block",minWidth:"auto"}} type='button' onClick={handleBackToTable} className={styles.backbuttonform}>
                             Back
                         </button>
@@ -309,7 +309,7 @@ export const ManageSuper = (props:any) => {
                             </div>
 
                             <div>
-                                <button type='button' className='btn btn-primary' onClick={handleAddUsers}>
+                                <button type='button' style={{padding:'9px 10px', borderRadius:'4px'}} className='btn btn-primary' onClick={handleAddUsers}>
                                     Add
                                 </button>
                             </div>

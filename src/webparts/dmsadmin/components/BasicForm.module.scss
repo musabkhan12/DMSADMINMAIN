@@ -6,6 +6,9 @@ body{
   background-color: #ededed !important;
   height: 1500px !important;
 }
+.container table tbody tr:nth-child(2n) {
+  background-color: #fff;
+}
 .fullScreen {
   width: 100vw;  /* 100% of the viewport width */
   height: 100vh; /* 100% of the viewport height */
@@ -675,13 +678,13 @@ width: 98%;;
   background-color: #fff;
   /* border: thin solid #5db0e0; */
   border-radius: 20px;
-  width: 100%;
+  width: 100%;    padding: 7px 0px;
 }
 .formcontainer1{
   background-color: #fff;
   /* border: thin solid #5db0e0; */
   border-radius: 20px;
-  width: 100%;
+  width: 100%;  padding: 7px 0px;
 }
 
 header {
@@ -706,6 +709,7 @@ header {
   overflow: hidden;
   white-space:nowrap;
   text-overflow: ellipsis;
+  background: #f2f3f5 !important;
   text-align: center !important;
 }
 .event-table tbody td{
@@ -722,7 +726,7 @@ header {
 //   text-overflow: inherit  !important;
 // }
 .event-table tbody{
-  height: 300px;
+  max-height: 3000px;
   width: 100%;
   overflow-y: hidden;
   display: block;
@@ -761,20 +765,20 @@ margin: auto;
 }
 
 .event-table th{
-  background-color: #d9ede5;
+  background-color: #f2f3f5 !important;
     padding: 10px;
     text-align: left;
     // border-radius: 8px;
 }
 .event-table2 th{
-  background-color: #d9ede5;
+  background-color: #f2f3f5;
     padding: 10px;
     text-align: left;
   
 }
 
 .event-table thead{
-  background-color: #d9ede5;
+  background-color: #f2f3f5 !important;
   // border-radius: 2px;
   width: 100%;
   display: inline-block;
@@ -784,7 +788,7 @@ margin: auto;
   width: 100%;
 }
 .event-table2 thead{
-  background-color: #d9ede5;
+  background-color: #f2f3f5 !important;
   border-radius: 2px;
 }
 .event-table td {
@@ -802,7 +806,7 @@ margin: auto;
   // background-color: #d4d2d2;
   // background-color: #d4d2d2;
   // color: blue;
-  background-color: #ededed;
+  background-color: #fff;
  
 
 }
@@ -869,6 +873,7 @@ margin-left: 10px;
 border: none;
 color: white;
 border-radius: 4px;
+font-size: 14px;
 padding: 8px;
 // height: 27px;
 height: 40px;
@@ -913,7 +918,7 @@ cursor: pointer;
   max-width:70px !important;
 }
 .editdicon{
-  height: 20px;
+  height: 25px;
 }
 .deleteicon{
   height: 25px;
@@ -1176,7 +1181,7 @@ color: black;
   width: 76%;
 }
 .event-table tbody td, .event-table thead th {
-  max-width: 222px;
+  max-width:193px;
   min-width: 193px;
 }
 .event-table tbody{
@@ -1192,7 +1197,7 @@ color: black;
   overflow: auto;
 }
 .event-table thead th {
-  max-width: 219px;
+  max-width: 185px;
   min-width: 185px;
 }
 }
@@ -1400,4 +1405,73 @@ color: black;
 }
 .createdepartmenthalf{
   width: 50% !important;
+}
+.mtbalenew{
+  width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    border-radius: 0px;
+}
+.mtbalenew thead {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+}
+.mtbalenew tr {
+  display: table;
+  width: 100%;
+}
+.mtbalenew th {
+  background:#f2f3f5 !important;
+  font-weight: 600 !important;
+  color: #000;
+  font-size: 14px;
+
+  min-width: 130px;
+  max-width: 130px;
+  padding: 10px !important;
+  border-bottom: 0px solid #1b6363 !important;
+}
+.mtbalenew tbody {
+  width: 100%;
+  position: relative;
+  display: block;
+  max-height: 30007px !important;
+  overflow-y: hidden !important;
+}
+.mtbalenew td {
+  min-width: 130px;
+  max-width: 130px;
+  padding: 4px 10px; font-size: 14px;
+  text-align: left;
+  background-color: #fff;
+  overflow: hidden;color: #000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid #e1e1e1;
+}
+.indexdesign{
+  background: #d2effa !important;
+    color: #1fb0e5 !important;
+    width: 28px !important;
+    height:28 !important;
+    font-size: 16px !important;
+    border: none;
+    float: left;
+    line-height: 30px !important;
+  
+    padding: 0px 1px !important;
+    border-radius: 1000px; text-align: center; font-weight: 600;
+}
+.stausbg{
+
+    border-radius: 4px;
+    background: rgba(0, 135, 81, 0.20) !important;
+    font-weight: 500 !important;
+    color: #008751;
+    padding: 2px 5px !important; text-align: center;
+    
+    
 }

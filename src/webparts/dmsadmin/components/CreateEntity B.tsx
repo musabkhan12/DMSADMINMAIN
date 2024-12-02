@@ -135,9 +135,7 @@ let currentusername="";
                     </div>
                 </div>
                 </form>
-        </div>
-        
-        <div className={styles.approvecancel}>
+                <div className={styles.approvecancel}>
                     <button type="submit" className={styles.backbuttonform1} onClick={handleSubmit}>
                         <p className={styles.Addtext}>Submit</p>
                     </button>
@@ -145,6 +143,9 @@ let currentusername="";
                         <p className={styles.Addtext}>Cancel</p>
                     </button>
         </div>
+        </div>
+        
+        
     </div>
     </>
   )

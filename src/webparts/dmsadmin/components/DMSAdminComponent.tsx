@@ -1001,28 +1001,29 @@ interface IMyComponentProps {
       }
       {toggleManagePermissionCard === "Yes" && (
         <div className="position-relative">
+          <div>
             <button className="btn back-to-admin" onClick={()=>handleReturnToMainFromPermissionTable('')}>Back To Main</button>
+           
+           </div>
             <div style={{
                   
                       position:"relative",
                   
-                      marginTop:"10px",
+                      marginTop:"70px",
                       padding:"20px",
                       border:"2px solid #54ade0",
-                      borderRadius:"10px",
+                      borderRadius:"20px",
                       background:"#fff",
+                      clear:"both",
+                      float:"left",
+                      width:"100%"
   
                     }}>
-                    <p style={{
+                    <p className="font-20" style={{ 
                   
                     }}>Manage Users And Permission 2</p>
-                    <div style={{
-                      gap:"60px",
-                      display:"flex"
-                    }}>
-                      <div style={{
-                        width:"370px"
-                      }}>
+                    <div className="row">
+                      <div className="col-sm-4">
                         <label>Entity</label>
                         <Select                        
                             options={adminPermissionEntity}
@@ -1033,9 +1034,7 @@ interface IMyComponentProps {
                             noOptionsMessage={() => "No Entity Found..."}
                           />
                       </div>
-                      <div  style={{
-                        width:"370px"
-                      }}>
+                      <div className="col-sm-4">
                         <label>Groups</label>
                         <Select
                             options={groups}
@@ -1046,9 +1045,7 @@ interface IMyComponentProps {
                             noOptionsMessage={() => "No Groups Found..."}
                           />
                       </div>
-                         { <div  style={{
-                        width:"220px"
-                        }}>
+                         { <div  className="col-sm-4">
                        <label>Users</label>
                         <Select
                             isMulti
@@ -1083,45 +1080,43 @@ interface IMyComponentProps {
                       justifyContent:"center"
                      
                     }}>
-                         <button type="button" onClick={handleAddUsers}>
+                         <button style={{padding:'8px 10px', borderRadius:'4px'}} type="button" className="mt-4 btn btn-primary" onClick={handleAddUsers}>
                          Add
                       </button>
-                      <button type="button" className="mt-4 btn btn-primary" onClick={hanldeManagePermission}>
+                      <button type="button" style={{padding:'8px 10px', borderRadius:'4px', background:'#6c757d', color:'#fff'}} className="mt-4 btn addbuttonargform1" onClick={hanldeManagePermission}>
                          Manage Permission
                       </button>
                     </div>
                   </div>
 
                   {showGroupsTable ==="Yes" && (
-              <div style={{
-                marginLeft:"50px",
-                marginTop:"50px"
-              }}>
-                                            <header>
-                        <div className={styles.title}>{selectedEntityForPermission.value} &gt; Groups
+              <div>
+                                            
+                        <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
+                        <header style={{padding:'0px 0px 5px 0px'}}>
+                        <div className='page-title fw-bold mb-1 font-20'>{selectedEntityForPermission.value} &gt; Groups
                         </div>
                         </header>
-                        <div className={styles.container}>
-                        <table className={styles["event-table"]}>
+                        <table className='mtbalenew'>
 
                             <thead>
                             <tr>
-                                <th className={styles.serialno}>Title</th>
-                                <th className={styles.tabledept}>Permission</th>
-                                <th  className={styles.tabledept}>Description</th>
+                                <th>Title</th>
+                                <th>Permission</th>
+                                <th >Description</th>
                             </tr>
                             </thead>
                             <tbody>
                             {groups.map((item:any, index:any) => (
                                 <React.Fragment key={item.Id}>
-                                <tr className={styles.tabledata}>
-                                    <td className={styles.tabledept}>
+                                <tr>
+                                    <td>
                                     {item.value || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td >
                                     {item.permission || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td>
                                     {item.Description || ''}
                                     </td>
                                 </tr>
@@ -1130,50 +1125,51 @@ interface IMyComponentProps {
                         </tbody>
                         </table>
                         </div>
-                <header>
-                  <div className={styles.title}>{selectedEntityForPermission.value} &gt; Users
+               
+                <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
+                <header style={{padding:'0px 0px 5px 0px'}}>
+                  <div className='page-title fw-bold mb-1 font-20'>{selectedEntityForPermission.value} &gt; Users
                   </div>
                 </header>
-                <div className={styles.container}>
-                        <table className={styles["event-table"]}>
+                        <table className='mtbalenew'>
 
                             <thead>
                             <tr>
-                                <th className={styles.serialno}>S.No.</th>
-                                <th className={styles.tabledept}>User</th>
-                                <th className={styles.tabledept}>User Email</th>
-                                <th  className={styles.tabledept}>Group Name</th>
-                                <th  className={styles.tabledept}>Permission</th>
-                                <th  className={styles.tabledept}>Description</th>
-                                <th className={styles.editdeleteicons}>Action</th>
+                                <th style={{minWidth:'55px', maxWidth:'55px'}}>S.No.</th>
+                                <th>User</th>
+                                <th>User Email</th>
+                                <th>Group Name</th>
+                                <th>Permission</th>
+                                <th>Description</th>
+                                <th style={{minWidth:'65px', maxWidth:'65px'}}>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             {allUsersFromGroups.map((item:any, index:any) => (
                                 <React.Fragment key={item.userId}>
-                                <tr className={styles.tabledata}>
-                                    <td className={styles.serialno}>
-                                    &nbsp; &nbsp; {index + 1}
+                                <tr>
+                                    <td style={{minWidth:'55px', maxWidth:'55px'}}>
+                                 <span className="indexdesign">  {index + 1}</span> 
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td>
                                     {item.user || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td >
                                     {item.email || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td>
                                     {item.groupName || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td>
                                     {item.permission || ''}
                                     </td>
-                                    <td className={styles.tabledept}>
+                                    <td>
                                     {item.Descirption || ''}
                                     </td>
-                                    <td className={styles.editdeleteicons}>
+                                    <td style={{minWidth:'65px', maxWidth:'65px'}}>
                                     <img
                                         className={styles.deleteicon}
-                                        src={require("../assets/delete.png")}
+                                        src={require("../assets/del.png")}
                                         alt="Delete"
                                         onClick={(event)=>{
                                             handleDeleteUser(item.userId,item.groupName)
