@@ -226,11 +226,11 @@ const Entity = () => {
 {showFirstDiv ? (
         <div className={styles.argform}>
           <div className='row'>
-            <div className='col-md-7 pt-3'>
-            <div className={styles.title}>Entity</div>
+            <div className='col-md-7 pt-0'>
+            <div className='page-title fw-bold mb-1 font-20'>Entity</div>
             </div>
             <div className='col-md-5'>
-            <div className="padd-right1">
+            <div className="padd-right1 mt-0">
               {/* <a className={styles.backbuttonform}>
                 <img
                   className={styles.backimg}
@@ -242,10 +242,10 @@ const Entity = () => {
                 onClick={handleButtonClickShow}
                 className={styles.addbuttonargform}
               >
-                <img
+                {/* <img
                   className={styles.addimg}
                   src={require("../assets/plus.png")}
-                />
+                /> */}
                 <p className={styles.Addtext}>Create New</p>
               </a>
             </div>
@@ -308,21 +308,21 @@ const Entity = () => {
             </table>
            
           </div> */}
-           <div className={styles.container}>
-            <table className={styles["event-table"]}>
+           <div style={{padding:'15px'}} className={styles.container}>
+            <table className="mtbalenew">
 
               <thead>
                 <tr>
                   {/* <th className={styles.serialno}>S.No.</th> */}
-                  <th className="tableheadtitle" style={{ borderBottomLeftRadius: '10px', minWidth: '50px', maxWidth: '50px', borderTopLeftRadius: '10px' }}>
+                  <th  style={{ borderBottomLeftRadius: '0px', minWidth: '55px', maxWidth: '55px', borderTopLeftRadius: '0px' }}>
  
-                    <div className="d-flex pb-2">
-                      <span>S.No.</span>
+                    <div className="pb-0">
+                      <span>S.No.</span>&nbsp;
                       <span onClick={() => handleSortChange('SNo')}>
                         <FontAwesomeIcon icon={faSort} />
                       </span>
                     </div>
-                    <div className="bd-highlight">
+                    {/* <div className="bd-highlight">
                       <input
                         type="text"
                         placeholder="index"
@@ -330,18 +330,18 @@ const Entity = () => {
                         className="inputcss"
                         style={{ width: '100%' }}          
                       />
-                    </div>
+                    </div> */}
                   </th>
                   {/* <th className={styles.tabledept}>Title</th> */}
-                  <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                    <div className="d-flex pb-2" >
-                      <span >Title</span> 
+                  <th className="" >
+                  
+                    <div className="pb-0" >
+                      <span >Title</span> &nbsp;
                       <span className="Sorting" onClick={() => handleSortChange('Title')}>
                         <FontAwesomeIcon icon={faSort} /> 
                       </span>
                     </div>
-                    <div className=" bd-highlight">
+                    {/* <div className=" bd-highlight">
                       <input 
                         type="text" 
                         placeholder="Filter by Title" 
@@ -349,79 +349,106 @@ const Entity = () => {
                         className='inputcss' 
                         style={{ width: '100%' }} 
                       />
-                    </div>
-                    </div>
+                    </div> */}
+                
                   </th>
                   {/* <th  className={styles.tabledept}>Description</th> */}
-                  <th  className={styles.tabledept}>
-                  <div className="d-flex flex-column bd-highlight ">
-                    <div className="d-flex pb-2" >
+                  <th  >
+               
+                    <div className=" pb-0" >
                       <span >Description</span> 
-                      {/* <span className="Sorting" onClick={() => handleSortChange('Title')}>
-                        <FontAwesomeIcon icon={faSort} /> 
-                      </span> */}
+                  
                     </div>
-                  </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
                   </th>
-                  <th className={styles.tabledept}>URL</th>
-                  <th className={styles.tabledept}>Status</th>
-                  <th className={styles.tabledept}>Created At</th>
+                  <th >
+                  <div className="pb-0" >
+                      <span >URL</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    
+                    </th>
+                  <th style={{minWidth: '70px', maxWidth: '70px' }}>
+                  <div className=" pb-0" >
+                      <span >Status</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    </th>
+                  <th >
+                  <div className="pb-0" >
+                      <span >Created At</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    </th>
                   {/* <th className={styles.tabledept}>Created By</th> */}
-                  <th className="tableheadtitle" >
-                    <div className="d-flex flex-column bd-highlight ">
-                      <div className="d-flex pb-2" >
-                        <span >	Created By</span>  
+                  <th  >
+                  
+                      <div className=" pb-0" >
+                        <span >	Created By</span> &nbsp; 
                         <span 
                           onClick={() => handleSortChange('Entity')}>
                               <FontAwesomeIcon icon={faSort} /> 
                         </span>
                       </div>
-                        <div className=" bd-highlight">
+                        {/* <div className=" bd-highlight">
                           <input 
                             type="text" 
                             placeholder="Filter by User" 
                             onChange={(e) => handleFilterChange(e, 'CurrentUser')}
                             className='inputcss' 
                             style={{ width: '100%' }} />
-                        </div>
-                      </div>
+                        </div> */}
+                    
                   </th>
-                  <th className={styles.editdeleteicons}>Action</th>
+                  <th style={{ borderBottomLeftRadius: '0px', minWidth: '70px', maxWidth: '70px', borderTopLeftRadius: '0px' }}>
+                    
+                  <div className=" pb-0" >
+                      <span >Action</span> 
+                  
+                    </div>
+                    {/* <div className="d-flex flex-column bd-highlight "> </div> */}
+                    </th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.map((item, index) => (
                     <React.Fragment key={item.UniqueId}>
-                    <tr className={styles.tabledata}>
-                        <td className={styles.serialno}>
+                    <tr>
+                        <td style={{ borderBottomLeftRadius: '0px', textAlign:'center', minWidth: '55px', maxWidth: '55px', borderTopLeftRadius: '0px' }}>
+                          <span className='indexdesign'>
                         {(currentPage - 1) * itemsPerPage + index + 1}
-                        </td>
-                        <td className={styles.tabledept}>
+                        </span>                        </td>
+                        <td className="">
                         {item.Title || 'No Title'}
                         </td>
-                        <td className={styles.tabledept} title={item.Description}
+                        <td  title={item.Description}
                         >
                         {item.Description || 'No Description'}
                         </td>
-                        <td className={styles.tabledept} title={item.SiteURL}>
+                        <td  title={item.SiteURL}>
                         {item.SiteURL || 'No URL'}
                         </td>
-                        <td className={styles.tablename}>
+                        <td style={{minWidth: '70px', maxWidth: '70px' }}>
+                          <div className='stausbg'>
                         {item.Active === "Yes" ? 'Active' : 'Inactive'}
+                        </div>
                         </td>
-                        <td className={styles.tabledept}>
+                        <td >
                     
                         {/* {format(new Date(item.Created), 'MMM dd, yyyy') || 'No Date'} */}
                         {format((item.Created), 'MMM dd, yyyy') || 'No Date'}
                         
                         </td>
-                        <td className={styles.tabledept}>
+                        <td >
                         {item.Author.Title || 'No Author'}
                         </td>
-                        <td className={styles.editdeleteicons}>
+                        <td style={{ borderBottomLeftRadius: '0px', minWidth: '70px', maxWidth: '70px', borderTopLeftRadius: '0px' }}>
                         <img
-                            className={styles.editdicon}
-                            src={require("../assets/edit.svg")}
+                            className='editicon12'
+                            src={require("../assets/edit.png")}
                             alt="Edit"
                             onClick={() => handleEditClick(item)}
                         />
@@ -461,10 +488,10 @@ const Entity = () => {
         <div className={styles.argform}>
           <div style={{marginBottom:"20px"}} className='row'>
             <div className='col-md-7'>
-            <div className={styles.title}>Create Entity</div>
+            <div className='page-title fw-bold mb-1 font-20'>Create Entity</div>
             </div>
             <div className='col-md-5'>
-             <div className='padd-right1'>
+             <div className='padd-right1 mt-0'>
             <div className={styles.actions}>
               <a
                 className={styles.backbuttonform}

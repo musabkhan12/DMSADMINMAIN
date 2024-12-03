@@ -226,10 +226,10 @@ const Basic: React.FC<BasicFormProps> = ({
   return (
         
     <>  
-        <div className={styles.argform}>
+      <div className={styles.DmsAdminForm}>
         <div className={styles.formcontainer}>            
             <div className={styles.apphier}>
-                <h1 className={styles.apptitle}>Create Entity 1</h1>
+                <h1 className={styles.apptitle}>Create Entity</h1>
             </div>
             <hr className={styles.hrtag}></hr>
             <form id="createMaster" onSubmit={handleSubmit}>
