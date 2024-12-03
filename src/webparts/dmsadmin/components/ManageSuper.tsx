@@ -61,10 +61,11 @@ export const ManageSuper = (props:any) => {
             // Get the group by name
             const group = await sp.web.siteGroups.getByName('DMSSuper_Admin');
             // Remove the user from the group using their userId
-            await group.users.removeById(userId);
-            console.log(`User with ID ${userId} has been removed from the super admin group`);
-            onRemove(UserTitle);
-            setRefresh(!refresh);
+            // await group.users.removeById(userId);
+            // console.log(`User with ID ${userId} has been removed from the super admin group`);
+            // onRemove(UserTitle);
+            // setRefresh(!refresh);
+            confirmDelete(group,userId,UserTitle)
         } catch (error) {
             console.error("Error removing user from group: ", error);
         }
@@ -146,20 +147,51 @@ export const ManageSuper = (props:any) => {
           checkValidation();
           return;
         }
+
+        // New Code for chcek that if user already exist or not
+        // const usersFromDMSSuperAdmin = await sp.web.siteGroups.getByName('DMSSuper_Admin').users();
+        // console.log("usersFromDMSSuperAdmin",usersFromDMSSuperAdmin);
+        // const ids2 = usersFromDMSSuperAdmin.map(item => item.Id)
+        // console.log("ids2",ids2);
+        // const alReadyPresent=selectedUsersForPermission.filter(item => ids2.includes(Number(item.id)));
+        // console.log("alReadyPresent",alReadyPresent);
+
+        // if(alReadyPresent.length>0){
+        //     alreadyPresent();
+        //     return;
+        // }
+
         // const subsiteContext = await sp.site.openWebById(props.selectedEntityForPermission.SiteID); 
-        selectedUsersForPermission.forEach(async(user:any)=>{
-          try {
-            const userObj = await sp.web.ensureUser(user.email);
-            console.log("userObj",userObj);
-            const users=await sp.web.siteGroups.getByName('DMSSuper_Admin').users.add(userObj.data.LoginName);
-            console.log(`${user.email} added to the super admin group successfully.`,users);
-          } catch (error) {
-            console.error(`Failed to add ${user.email} to the group: `, error);
-          }
-        })
+        // selectedUsersForPermission.forEach(async(user:any)=>{
+        //   try {
+        //     const userObj = await sp.web.ensureUser(user.email);
+        //     console.log("userObj",userObj);
+        //     const users=await sp.web.siteGroups.getByName('DMSSuper_Admin').users.add(userObj.data.LoginName);
+        //     console.log(`${user.email} added to the super admin group successfully.`,users);
+        //   } catch (error) {
+        //     console.error(`Failed to add ${user.email} to the group: `, error);
+        //   }
+        // })
+        // onSuccess();
+        // setRefresh(!refresh);
+        // setActiveComponent('');
+
+        // New Code start
+        await Promise.all(selectedUsersForPermission.map(async (user: any) => {
+            try {
+              const userObj = await sp.web.ensureUser(user.email);
+              console.log("userObj", userObj);
+              const users = await sp.web.siteGroups.getByName('DMSSuper_Admin').users.add(userObj.data.LoginName);
+              console.log(`${user.email} added to the super admin group successfully.`, users);
+            } catch (error) {
+              console.error(`Failed to add ${user.email} to the group: `, error);
+            }
+          }));
+        selectedUsersForPermission=undefined;
+        //   End
         onSuccess();
-        setRefresh(!refresh);
         setActiveComponent('');
+        setRefresh(!refresh);
         
       }
     
@@ -176,6 +208,181 @@ export const ManageSuper = (props:any) => {
         Swal.fire("Please fill out the fields!", "All fields are required");
   }
 
+  // Already present erro start
+    // const alreadyPresent=()=>{
+    // Swal.fire(`User Already Exist`, "Please Change the User", "warning");
+    // }
+// End
+
+  // Added confirm popup start
+  const confirmDelete=(group:any,userId:any,userTitle:any)=>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Removed it!"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+      await group.users.removeById(userId);
+      setRefresh(!refresh);
+        Swal.fire({
+          title: "Removed!",
+          text: `${userTitle} Suucessfuly Removed.`,
+          icon: "success"
+        });
+      }
+    });
+  }
+//   End
+
+
+  // Code for filter and search start
+ const [filters, setFilters] = React.useState({
+    SNo: '',
+    Title : '',
+    // Title: '',
+    Email: '',
+    Modified: '',
+    Status: '',
+  
+    SubmittedDate: ''
+  });
+  const [sortConfig, setSortConfig] = React.useState({ key: '', direction: 'ascending' });
+  
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    setFilters({
+      ...filters,
+      [field]: e.target.value,
+    });
+    console.log(filters , "filters filters")
+  };
+  
+  const handleSortChange = (key: string) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+  
+  const applyFiltersAndSorting = (data: any[]) => {
+    const filteredData = data.filter((item, index) => {
+      return (
+        (filters.SNo === '' || String(index + 1).includes(filters.SNo)) &&
+        (filters.Title === '' || 
+          (item.Title && item.Title.toLowerCase().includes(filters.Title.toLowerCase()))) &&
+        (filters.Email === '' || 
+          (item.Email && item.Email.toLowerCase().includes(filters.Email.toLowerCase()))) &&
+        (filters.Modified === '' || 
+          (item.Editor.Title && item.Editor.Title.toLowerCase().includes(filters.Modified.toLowerCase()))) &&
+        (filters.SubmittedDate === '' || 
+          (item.Status && item.Status.toLowerCase().includes(filters.SubmittedDate.toLowerCase())))
+      );
+    });
+  
+    const naturalSort = (a: any, b: any) => {
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    };
+  
+    const sortedData = filteredData.sort((a, b) => {
+      if (sortConfig.key === 'SNo') {
+        const aIndex = data.indexOf(a);
+        const bIndex = data.indexOf(b);
+        return sortConfig.direction === 'ascending' ? aIndex - bIndex : bIndex - aIndex;
+      } else if (sortConfig.key) {
+        const aValue = a[sortConfig.key] ? a[sortConfig.key].toLowerCase() : '';
+        const bValue = b[sortConfig.key] ? b[sortConfig.key].toLowerCase() : '';
+        return sortConfig.direction === 'ascending' ? naturalSort(aValue, bValue) : naturalSort(bValue, aValue);
+      }
+      return 0;
+    });
+  
+    return sortedData;
+  };
+  
+  const filteredUserData=applyFiltersAndSorting(selectedUser);
+  // end
+  
+    // Add pagination start
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(filteredUserData.length / itemsPerPage);
+    
+    const handlePageChange = (pageNumber: any) => {
+      if (pageNumber > 0 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+      }
+    };
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = filteredUserData.slice(startIndex, endIndex);
+  
+    interface PaginationProps{
+      currentPage: number;
+      totalPages: any;
+      handlePageChange: any;
+    }
+    const Pagination = ( { currentPage, totalPages, handlePageChange }: PaginationProps) => {
+      const pageLimit = 5; // Number of visible page items
+    
+      // Determine the start and end page based on the current page and total pages
+      const startPage = Math.max(1, currentPage - Math.floor(pageLimit / 2));
+      const endPage = Math.min(totalPages, startPage + pageLimit - 1);
+    
+      // Adjust start page if it's too close to the end
+      const adjustedStartPage = Math.max(1, Math.min(startPage, totalPages - pageLimit + 1));
+    
+      // Create an array for the visible page numbers
+      const visiblePages = Array.from(
+        { length: Math.min(pageLimit, totalPages) },
+        (_, index) => adjustedStartPage + index
+      );
+    
+      return (
+        <nav className="pagination-container">
+          <ul className="pagination">
+            {/* Previous Button */}
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <a
+                className="page-link PreviousPage"
+                onClick={() => handlePageChange(currentPage - 1)}
+                aria-label="Previous"
+              >
+                «
+              </a>
+            </li>
+    
+            {/* Render visible page numbers */}
+            {visiblePages.map((pageNumber) => (
+              <li
+                key={pageNumber}
+                className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+              >
+                <a className="page-link" onClick={() => handlePageChange(pageNumber)}>
+                  {pageNumber}
+                </a>
+              </li>
+            ))}
+    
+            {/* Next Button */}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <a
+                className="page-link NextPage"
+                onClick={() => handlePageChange(currentPage + 1)}
+                aria-label="Next"
+              >
+                »
+              </a>
+            </li>
+          </ul>
+        </nav>
+      );
+    };
+    // End
   return (
 <>
               {activeComponent === '' && (
@@ -227,7 +434,7 @@ export const ManageSuper = (props:any) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {selectedUser.map((item:any, index:any) => (
+                            {currentData.map((item:any, index:any) => (
                                 <React.Fragment key={item.Id}>
                                 <tr>
                                     <td style={{minWidth:'20px',maxWidth:'20px'}}>
@@ -254,6 +461,12 @@ export const ManageSuper = (props:any) => {
                             ))}
                         </tbody>
                         </table>
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          handlePageChange={handlePageChange}
+  
+                        />
                         </div>
                     </div>
               )}

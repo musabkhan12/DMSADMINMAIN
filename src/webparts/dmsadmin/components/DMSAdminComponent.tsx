@@ -80,6 +80,9 @@ interface IMyComponentProps {
   let superAdminArray:any[];
   // let IsAdmin=false;
 
+  let groupDetails:any;
+
+
   interface IDmsAdminComponentProps {
     context: WebPartContext;
     someOtherProp?: any;
@@ -592,14 +595,45 @@ interface IMyComponentProps {
       
         console.log("allUsersFromGroups",usersFromGroups);
         console.log("filteredRoles",filteredRoles);
+        // New code start filter the group and its description
+        groupDetails=filteredRoles.find(item => item.value === `${selectedEntity.value}_Admin`);
+        console.log("groupDetails",groupDetails);
+        selectedGropuForPermission=groupDetails;
+        try {
+          const subsiteContext = await sp.site.openWebById(selectedEntityForPermission.SiteID);
+          const usersFromSelectedGroups = await subsiteContext.web.siteGroups.getByName(`${groupDetails.value}`).users();
+          console.log("usersFromSelectedGroups",usersFromSelectedGroups);
+          selectedGroupUsers=usersFromSelectedGroups;
+          
+            const showUsersFromGroupsOnTable=usersFromSelectedGroups.map((user)=>{
+              return {
+                user: user.Title,
+                email: user.Email,
+                groupName: groupDetails.value,
+                permission:groupDetails.permission,
+                Descirption: groupDetails.Description,
+                userId: user.Id,
+              }
+            })
+          console.log("showUsersFromGroupsOnTable1",showUsersFromGroupsOnTable);
+          setAllUsersFromGroups([]);
+          setAllUsersFromGroups(showUsersFromGroupsOnTable);
+          setShowGroupsUsers("Yes");
+        } catch (error) {
+          console.log("error from getting the users from the groups after selecting the groups",error);
+        }
+        // end
         setGroups(filteredRoles);
-        setAllUsersFromGroups([]);
-        setAllUsersFromGroups(usersFromGroups);
+        // setAllUsersFromGroups([]);
+        // setAllUsersFromGroups(usersFromGroups);
         setShowGroupsTable("Yes");
     }
 
     //  handle groups select
     const handleGroupsSelect=async(selectedGrous:any)=>{
+      // Set selected groups start
+      groupDetails=selectedGrous;
+      // End
         console.log("selectedGrous",selectedGrous);
         console.log("selectedEntityForPermission",selectedEntityForPermission);
         selectedGropuForPermission=selectedGrous;
@@ -608,6 +642,21 @@ interface IMyComponentProps {
           const usersFromSelectedGroups = await subsiteContext.web.siteGroups.getByName(`${selectedGrous.value}`).users();
           console.log("usersFromSelectedGroups",usersFromSelectedGroups);
           selectedGroupUsers=usersFromSelectedGroups;
+
+            const showUsersFromGroupsOnTable=usersFromSelectedGroups.map((user)=>{
+              return {
+                user: user.Title,
+                email: user.Email,
+                groupName: selectedGrous.value,
+                permission:selectedGrous.permission,
+                Descirption: selectedGrous.Description,
+                userId: user.Id,
+              }
+            })
+          console.log("showUsersFromGroupsOnTable",showUsersFromGroupsOnTable);
+          setAllUsersFromGroups([]);
+          setAllUsersFromGroups(showUsersFromGroupsOnTable);
+          setShowGroupsUsers("Yes");
         } catch (error) {
           console.log("error from getting the users from the groups after selecting the groups",error);
         }
@@ -667,10 +716,12 @@ interface IMyComponentProps {
     });
 
     await Promise.all(addUsersPromises);
-
+    onSuccess(selectedGropuForPermission.value);
     // Call handleEntitySelect once all users have been added
     // to refresh the user table
-    handleEntitySelect(selectedEntityForPermission);
+    // handleEntitySelect(selectedEntityForPermission);
+    // selectedUsersForPermission=undefined;
+    handleGroupsSelect(selectedGropuForPermission);
   }
 
     const hanldeManagePermission=()=>{
@@ -687,6 +738,8 @@ interface IMyComponentProps {
       setToggleManagePermission('Yes');
       setActiveComponent(Name);
       setToggleManagePermissionCard("No");
+      setShowGroupsUsers("No");
+      setShowGroupsTable("No");
     }
 
     const checkValidation=()=>{
@@ -705,6 +758,7 @@ interface IMyComponentProps {
 
     // New Code Added for Show the selceted entity Groups in table form and also  show the all users of the groups
     const [showGroupsTable,setShowGroupsTable]=useState("No");
+    const [showGroupsUsers,setShowGroupsUsers]=useState("No");
     // const [refresh,setRefresh]=useState(false);
 
     // this function remove the user from groups
@@ -737,13 +791,22 @@ interface IMyComponentProps {
           await group.users.removeById(userId);
           console.log(`User with ID ${userId} has been removed from the group '${groupName}'`);
             // to refresh the user table
-            handleEntitySelect(selectedEntityForPermission);
+            // handleEntitySelect(selectedEntityForPermission);
+            handleGroupsSelect(selectedGropuForPermission);
           Swal.fire({
             title: "Removed!",
             text: `User Suucessfuly removed from ${groupName}.`,
             icon: "success"
           });
         }
+      });
+    }
+
+    const onSuccess=(groupName:any)=>{
+      Swal.fire({
+        title: "Added!",
+        text: `User Added Suucessfuly to the ${groupName}.`,
+        icon: "success"
       });
     }
     //  End
@@ -866,6 +929,86 @@ interface IMyComponentProps {
     }, []);
     const siteUrl = someOtherProp.siteUrl;
     console.log(siteUrl , "siteUrl")
+
+
+  // Add pagination start
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(allUsersFromGroups.length / itemsPerPage);
+  
+  const handlePageChange = (pageNumber: any) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+  
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = allUsersFromGroups.slice(startIndex, endIndex);
+
+  interface PaginationProps{
+    currentPage: number;
+    totalPages: any;
+    handlePageChange: any;
+  }
+  const Pagination = ( { currentPage, totalPages, handlePageChange }: PaginationProps) => {
+    const pageLimit = 5; // Number of visible page items
+  
+    // Determine the start and end page based on the current page and total pages
+    const startPage = Math.max(1, currentPage - Math.floor(pageLimit / 2));
+    const endPage = Math.min(totalPages, startPage + pageLimit - 1);
+  
+    // Adjust start page if it's too close to the end
+    const adjustedStartPage = Math.max(1, Math.min(startPage, totalPages - pageLimit + 1));
+  
+    // Create an array for the visible page numbers
+    const visiblePages = Array.from(
+      { length: Math.min(pageLimit, totalPages) },
+      (_, index) => adjustedStartPage + index
+    );
+  
+    return (
+      <nav className="pagination-container">
+        <ul className="pagination">
+          {/* Previous Button */}
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <a
+              className="page-link PreviousPage"
+              onClick={() => handlePageChange(currentPage - 1)}
+              aria-label="Previous"
+            >
+              «
+            </a>
+          </li>
+  
+          {/* Render visible page numbers */}
+          {visiblePages.map((pageNumber) => (
+            <li
+              key={pageNumber}
+              className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}
+            >
+              <a className="page-link" onClick={() => handlePageChange(pageNumber)}>
+                {pageNumber}
+              </a>
+            </li>
+          ))}
+  
+          {/* Next Button */}
+          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <a
+              className="page-link NextPage"
+              onClick={() => handlePageChange(currentPage + 1)}
+              aria-label="Next"
+            >
+              »
+            </a>
+          </li>
+        </ul>
+      </nav>
+    );
+  };
+  // End
+
     return (
       <div id="wrapper" ref={elementRef}>
       <div
@@ -1021,7 +1164,7 @@ interface IMyComponentProps {
                     }}>
                     <p className="font-20" style={{ 
                   
-                    }}>Manage Users And Permission 2</p>
+                    }}>Manage Users And Permission</p>
                     <div className="row">
                       <div className="col-sm-4">
                         <label>Entity</label>
@@ -1083,9 +1226,9 @@ interface IMyComponentProps {
                          <button style={{padding:'8px 10px', borderRadius:'4px'}} type="button" className="mt-4 btn btn-primary" onClick={handleAddUsers}>
                          Add
                       </button>
-                      <button type="button" style={{padding:'8px 10px', borderRadius:'4px', background:'#6c757d', color:'#fff'}} className="mt-4 btn addbuttonargform1" onClick={hanldeManagePermission}>
+                      {/* <button type="button" style={{padding:'8px 10px', borderRadius:'4px', background:'#6c757d', color:'#fff'}} className="mt-4 btn addbuttonargform1" onClick={hanldeManagePermission}>
                          Manage Permission
-                      </button>
+                      </button> */}
                     </div>
                   </div>
 
@@ -1094,7 +1237,9 @@ interface IMyComponentProps {
                                             
                         <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
                         <header style={{padding:'0px 0px 5px 0px'}}>
-                        <div className='page-title fw-bold mb-1 font-20'>{selectedEntityForPermission.value} &gt; Groups
+                        <div className='page-title fw-bold mb-1 font-20'>{selectedEntityForPermission.value} &gt; {groupDetails?.value && groupDetails?.value.includes('_') 
+                                  ? groupDetails?.value.split('_')[1] 
+                                  : groupDetails?.value || ''} &gt; Details
                         </div>
                         </header>
                         <table className='mtbalenew'>
@@ -1102,35 +1247,54 @@ interface IMyComponentProps {
                             <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Permission</th>
+                                {/* <th>Permission</th> */}
                                 <th >Description</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {groups.map((item:any, index:any) => (
+                            {/* {groups.map((item:any, index:any) => (
                                 <React.Fragment key={item.Id}>
                                 <tr>
                                     <td>
-                                    {item.value || ''}
-                                    </td>
-                                    <td >
-                                    {item.permission || ''}
+                                      {item.value && item.value.includes('_') 
+                                        ? item.value.split('_')[1] 
+                                        : item.value || ''}
                                     </td>
                                     <td>
                                     {item.Description || ''}
                                     </td>
                                 </tr>
                                 </React.Fragment>
-                            ))}
+                            ))} */}
+                            <tr>
+                              <td>
+                                {groupDetails?.value && groupDetails?.value.includes('_') 
+                                  ? groupDetails?.value.split('_')[1] 
+                                  : groupDetails?.value || ''}
+                              </td>
+                              <td>
+                                {groupDetails?.Description || ''}
+                              </td>
+                            </tr>
                         </tbody>
                         </table>
                         </div>
-               
-                <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
-                <header style={{padding:'0px 0px 5px 0px'}}>
-                  <div className='page-title fw-bold mb-1 font-20'>{selectedEntityForPermission.value} &gt; Users
-                  </div>
-                </header>
+                    {showGroupsUsers ==="Yes" && (<>
+                      <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
+                        <header style={{padding:'0px 0px 5px 0px'}}>
+                          <div className='page-title fw-bold mb-1 font-20'>
+                            {/* {selectedEntityForPermission.value} &gt; Users */}
+                            {selectedEntityForPermission.value} &gt; 
+                            {/* { selectedGropuForPermission.value} */}
+                            {/* {selectedGropuForPermission.value && selectedGropuForPermission.value.includes('_') 
+                              ? selectedGropuForPermission.value.split('_')[1] 
+                              : selectedGropuForPermission.value || ''} */}
+                              {groupDetails.value && groupDetails.value.includes('_') 
+                              ? groupDetails.value.split('_')[1] 
+                              : groupDetails.value || ''}
+                             &gt; Users
+                          </div>
+                        </header>
                         <table className='mtbalenew'>
 
                             <thead>
@@ -1145,11 +1309,14 @@ interface IMyComponentProps {
                             </tr>
                             </thead>
                             <tbody>
-                            {allUsersFromGroups.map((item:any, index:any) => (
+                            {currentData.map((item:any, index:any) => (
                                 <React.Fragment key={item.userId}>
                                 <tr>
                                     <td style={{minWidth:'55px', maxWidth:'55px'}}>
-                                 <span className="indexdesign">  {index + 1}</span> 
+                                 <span className="indexdesign">
+                                    {/* {index + 1} */}
+                                    {(currentPage - 1) * itemsPerPage + index + 1}
+                                    </span> 
                                     </td>
                                     <td>
                                     {item.user || ''}
@@ -1159,6 +1326,10 @@ interface IMyComponentProps {
                                     </td>
                                     <td>
                                     {item.groupName || ''}
+                                    {/* {item.groupName && item.groupName.includes('_') 
+                                        ? item.groupName.split('_')[1] 
+                                        : item.groupName || ''
+                                    } */}
                                     </td>
                                     <td>
                                     {item.permission || ''}
@@ -1181,8 +1352,18 @@ interface IMyComponentProps {
                             ))}
                         </tbody>
                         </table>
-                </div>
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          handlePageChange={handlePageChange}
+  
+                        />
+                      </div>
+                    </>)
+                    }
+                
               </div>
+              
             )}
                   {/* <div>
                     {activeComponent === "ManagePermission" && 
