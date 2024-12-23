@@ -476,6 +476,7 @@ tbody tr:nth-child(odd)
     border-right: var(--ct-theme-border-width) solid #ededed;
     box-shadow: 0 0 1px var(--grey-color-light);
     // width: 260px;
+    top: 0 !important;
 }
 .content-page {
   display: flex;

@@ -63,6 +63,7 @@ declare global {
   // import { MSGraphClient } from "@microsoft/sp-http";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
+import ManageFolderDeligation from "./ManageFolderDeligation";
 interface IMyComponentProps {
   context: WebPartContext;
 }
@@ -81,7 +82,10 @@ interface IMyComponentProps {
   // let IsAdmin=false;
 
   let groupDetails:any;
-
+  
+  let SITEID:any
+  let WEBID:any
+  let LISTID:any
 
   interface IDmsAdminComponentProps {
     context: WebPartContext;
@@ -115,7 +119,7 @@ interface IMyComponentProps {
     // New Code
     const [allUsersFromGroups,setAllUsersFromGroups]=useState<any[]>([]);
     // console.log("allUsersFromGroups outside select entity",allUsersFromGroups);
-    const [toggleManagePermission,setToggleManagePermission]=useState('No');
+    const [toggleManagePermission,setToggleManagePermission]=useState('Yes');
     const [adminPermissionEntity,setAdminPermissionEntity]=useState<any[]>([]);
     const [user,setUser]=useState<any[]>([]);
     const [groups,setGroups]=useState<any[]>([]);
@@ -125,6 +129,7 @@ interface IMyComponentProps {
 
     const handleToggleCard=(event:any,name:any)=>{
       event.preventDefault();
+      // alert(name)
       setToggleManagePermissionCard(name);
       setToggleManagePermission("No");
       setActiveComponent(null);
@@ -686,21 +691,6 @@ interface IMyComponentProps {
           checkValidation();
           return;
         }
-
-        // const subsiteContext = await sp.site.openWebById(selectedEntityForPermission.SiteID); 
-        // selectedUsersForPermission.forEach(async(user:any)=>{
-        //   try {
-        //     const userObj = await sp.web.ensureUser(user.email);
-        //     console.log("userObj",userObj);
-        //     const users=await subsiteContext.web.siteGroups.getByName(`${selectedGropuForPermission.value}`).users.add(userObj.data.LoginName);
-        //     console.log(`${user.email} added to the group successfully.`,users);
-        //   } catch (error) {
-        //     console.error(`Failed to add ${user.email} to the group: `, error);
-        //   }
-        // })
-
-        // to refresh the user table
-        // handleEntitySelect(selectedEntityForPermission);
         
     const subsiteContext = await sp.site.openWebById(selectedEntityForPermission.SiteID);
     //wait for all add operations to complete
@@ -914,6 +904,13 @@ interface IMyComponentProps {
   };
     const getmasterlis = async () => {
       try {
+        const site = await sp.site();
+        SITEID = site.Id;
+        const web = await sp.web();
+        WEBID = web.Id;
+        const list = await sp.web.lists.getByTitle("DMSAdmin").select("Id")();
+        LISTID = list.Id;
+        // alert(`this is site ID ${site.Id} and this is web ID ${web.Id} and this is list ID ${list.Id}`);
         const items = await sp.web.lists.getByTitle('DMSAdmin').items();
         console.log(items, "getmasterlis");
         setMylistdata(items);
@@ -923,9 +920,14 @@ interface IMyComponentProps {
       }
     };
     console.log(Mylistdata , "Mylistdata")
+
+    useEffect(() => {
+      getmasterlis();
+     
+    }, []);
     useEffect(() => {
       getcurrentuseremail();
-      getmasterlis();
+     
     }, []);
     const siteUrl = someOtherProp.siteUrl;
     console.log(siteUrl , "siteUrl")
@@ -1020,7 +1022,7 @@ interface IMyComponentProps {
         <HorizontalNavbar  _context={sp} siteUrl={siteUrl}/>
         <div className="content" style={{marginLeft: `${!useHide ? '240px' : '80px'}`,marginTop:'1.5rem'}}>
          
-        <div className="container-fluid  paddb">
+        <div className="container-fluid  paddb PADBBBD">
       {IsSuperAdmin ? (<>
         {activeComponent === "" ?
                  (<div>
@@ -1038,7 +1040,8 @@ interface IMyComponentProps {
                       const itemid = String(item.Id);
                       console.log(itemid, "itemsid");
                       console.log(imageData, "imagedata");
-                      const imageUrl = `https://officeindia.sharepoint.com//_api/v2.1/sites('338f2337-8cbb-4cd1-bed1-593e9336cd0e,e2837b3f-b207-41eb-940b-71c74da3d214')/lists('3f31e4eb-27b3-4370-b5cd-8cf594981912')/items('${itemid}')/attachments('${imageData.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                      const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmaniSpfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                      // const imageUrl = `https://alrostamanigroupae.sharepoint.com/sites/IntranetUAT/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                       console.log(imageUrl, "imageurl");
                       return (
                         <div className="col-sm-3 col-md-3 mt-2">
@@ -1124,21 +1127,25 @@ interface IMyComponentProps {
                                     </div>
                             </a>
                         </div>
+                      <div className="col-sm-3 col-md-3 mt-2">
+                            <a href="">
+                                    <div className="card-master box1" onClick={(event)=>
+                                      {
+                                        handleToggleCard(event,"Manage Folder Deligation")
+                                      }
+                                      }>
+                                      <div className="icon">
+                                        <img className="CardImage"  src={managepermission}/>
+                                      </div>
+                                      <p className="text-dark">Manage Folder Deligation</p>
+                                    </div>
+                            </a>
+                        </div>
                     </div>
                     </div>
                  ) :(
                   <>
-                    {/* {IsSuperAdmin === false && (
-                      <div style={
-                      {
-                        marginLeft:"30px",
-                        marginTop:"30px",
-                        color:"#707070"
-                      }
-                     }>
-                       <h6>'Unauthorized access. You do not have permission to view this page.'</h6> 
-                  </div>
-                    )} */}
+                
                   </>
                  )
       }
@@ -1201,21 +1208,7 @@ interface IMyComponentProps {
                           />
                        </div> 
                        } 
-                       {/* <div  style={{
-                        width:"220px"
-                        }}>
-                       <label>Users</label>
-                        <Select
-                            isMulti
-                            options={user}
-                            onChange={(selected: any) =>
-                              handleUsersSelect(selected)
-                            }
-                            placeholder="Select User..."
-                            noOptionsMessage={() => "No User Found..."}
-                          />
-                       </div>     */
-                       }
+                      
                     </div>
                     <div style={{
                       display:"flex",
@@ -1226,9 +1219,7 @@ interface IMyComponentProps {
                          <button style={{padding:'8px 10px', borderRadius:'4px'}} type="button" className="mt-4 btn btn-primary" onClick={handleAddUsers}>
                          Add
                       </button>
-                      {/* <button type="button" style={{padding:'8px 10px', borderRadius:'4px', background:'#6c757d', color:'#fff'}} className="mt-4 btn addbuttonargform1" onClick={hanldeManagePermission}>
-                         Manage Permission
-                      </button> */}
+                  
                     </div>
                   </div>
 
@@ -1247,25 +1238,12 @@ interface IMyComponentProps {
                             <thead>
                             <tr>
                                 <th>Title</th>
-                                {/* <th>Permission</th> */}
+                 
                                 <th >Description</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {/* {groups.map((item:any, index:any) => (
-                                <React.Fragment key={item.Id}>
-                                <tr>
-                                    <td>
-                                      {item.value && item.value.includes('_') 
-                                        ? item.value.split('_')[1] 
-                                        : item.value || ''}
-                                    </td>
-                                    <td>
-                                    {item.Description || ''}
-                                    </td>
-                                </tr>
-                                </React.Fragment>
-                            ))} */}
+                          
                             <tr>
                               <td>
                                 {groupDetails?.value && groupDetails?.value.includes('_') 
@@ -1283,12 +1261,7 @@ interface IMyComponentProps {
                       <div style={{padding:'15px',clear:'both', float:'left', marginTop:'15px'}} className={styles.container}>
                         <header style={{padding:'0px 0px 5px 0px'}}>
                           <div className='page-title fw-bold mb-1 font-20'>
-                            {/* {selectedEntityForPermission.value} &gt; Users */}
                             {selectedEntityForPermission.value} &gt; 
-                            {/* { selectedGropuForPermission.value} */}
-                            {/* {selectedGropuForPermission.value && selectedGropuForPermission.value.includes('_') 
-                              ? selectedGropuForPermission.value.split('_')[1] 
-                              : selectedGropuForPermission.value || ''} */}
                               {groupDetails.value && groupDetails.value.includes('_') 
                               ? groupDetails.value.split('_')[1] 
                               : groupDetails.value || ''}
@@ -1326,10 +1299,6 @@ interface IMyComponentProps {
                                     </td>
                                     <td>
                                     {item.groupName || ''}
-                                    {/* {item.groupName && item.groupName.includes('_') 
-                                        ? item.groupName.split('_')[1] 
-                                        : item.groupName || ''
-                                    } */}
                                     </td>
                                     <td>
                                     {item.permission || ''}
@@ -1364,25 +1333,12 @@ interface IMyComponentProps {
                 
               </div>
               
-            )}
-                  {/* <div>
-                    {activeComponent === "ManagePermission" && 
-                        (
-                          <div>
-                              <button onClick={()=>handleReturnToMainFromPermissionTable('')}>BackToMain</button>
-                              <ManagePermission
-                                // selectedGroupUsers={selectedGroupUsers}
-                                selectedGropuForPermission={selectedGropuForPermission}
-                                selectedEntityForPermission={selectedEntityForPermission}
-                              />
-                          </div>
-                        )
-                    }
-                  </div> */}
-                 
+            )}   
                 
-      </div>)
+      </div>
+      )
       }
+      
       {activeComponent === "ManagePermission" && 
                         (
                           <div className="position-relative">
@@ -1404,82 +1360,19 @@ interface IMyComponentProps {
                           </div>
                         )
       }
-      {/* Old Manage Permission  */}
-      {/* {toggleManagePermission === "Yes" ? (
-                  <div style={{
-                      width:"fit-content",
-                      position:"relative",
-                      marginLeft:"50px",
-                      marginTop:"50px",
-                      padding:"20px",
-                      border:"2px solid #54ade0",
-                      borderRadius:"10px",
-                      background:"#fff",
-  
-                    }}>
-                    <p style={{
-                      marginBottom:"20px",
-                      marginLeft:"300px"
-                    }}>Manage Users And Permission</p>
-                    <div style={{
-                      gap:"60px",
-                      display:"flex"
-                    }}>
-                      <div style={{
-                        width:"220px"
-                      }}>
-                        <label>Entity</label>
-                        <Select                        
-                            options={adminPermissionEntity}
-                            onChange={(selected: any) =>
-                              handleEntitySelect(selected)
-                            }
-                            placeholder="Select Entity..."
-                            noOptionsMessage={() => "No Entity Found..."}
-                          />
-                      </div>
-                      <div  style={{
-                        width:"220px"
-                      }}>
-                        <label>Groups</label>
-                        <Select
-                            options={groups}
-                            onChange={(selected: any) =>
-                              handleGroupsSelect(selected)
-                            }
-                            placeholder="Select Groups..."
-                            noOptionsMessage={() => "No Groups Found..."}
-                          />
-                      </div>
-                    </div>
-                    <div style={{
-                      display:"flex",
-                      gap:"10px",
-                      marginLeft:"300px",
-                      marginTop:"30px"
-                    }}>
-                      <button type="button" onClick={hanldeManagePermission}>
-                         Manage Permission
-                      </button>
-                    </div>
-                  </div>
-                 ) : (
-                  <div>
-                    {activeComponent === "ManagePermission" && 
+      {toggleManagePermissionCard === "Manage Folder Deligation" && 
                         (
-                          <div>
-                              <button onClick={()=>handleReturnToMainFromPermissionTable('')}>BackToMain</button>
-                              <ManagePermission
-                                selectedGropuForPermission={selectedGropuForPermission}
-                                selectedEntityForPermission={selectedEntityForPermission}
+                            <div className="position-relative">
+                              <button className="btn back-to-admin" onClick={()=>handleReturnToMainFromPermissionTable('')}>Back To Main</button>
+                              <ManageFolderDeligation
+                               // selectedGroupUsers={selectedGroupUsers}
+                              //  selectedGropuForPermission={selectedGropuForPermission}
+                              //  selectedEntityForPermission={selectedEntityForPermission}
+                               onBack={()=>handleBackToManagePermissionCard()}
                               />
                           </div>
                         )
-                    }
-                  </div>
-                 )
-      } */}
-                 
+      }
                 </div>
               </div>
             </div>
@@ -1496,7 +1389,6 @@ interface IMyComponentProps {
     return (
       <Provider>
         <Dmsadmincomponent context={context}  someOtherProp={props}/>
-        {/* <Dmsadmincomponent props={props}/> */}
       </Provider>
     );
   };

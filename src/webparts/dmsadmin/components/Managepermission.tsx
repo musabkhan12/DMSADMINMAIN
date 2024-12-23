@@ -354,7 +354,7 @@ const filteredUserData=applyFiltersAndSorting(selectedUser);
                     <div className={styles.argform}>
                         <div className='row'>
                         <div className='col-md-7 pt-0'>
-                        <div className='page-title fw-bold mb-0 font-20'>{props.selectedEntityForPermission.value} &gt; {props.selectedGropuForPermission.value}
+                        <div className='page-title fw-bold mb-0 font-20'>{props.selectedEntityForPermission?.value} &gt; {props.selectedGropuForPermission?.value}
                        
                         </div>
                         <div>
