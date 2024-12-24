@@ -321,7 +321,7 @@ const CreateEntityMapping: React.FC<forMapping> = ({
             <div className={styles.DmsAdminForm}>
                 <div className={styles.formcontainer}>
                     <div className={styles.apphier}>
-                        <h1 className={styles.apptitle}>Entity Map Devision & Department</h1>
+                        <h1 className={styles.apptitle}>Entity Map Division & Department</h1>
                     </div>
                     <hr className={styles.hrtag}></hr>
                     <form id="createMaster" onSubmit={handleSubmit}>

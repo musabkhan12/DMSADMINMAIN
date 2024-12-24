@@ -69,6 +69,8 @@ interface IMyComponentProps {
 }
   let superadmin = require('../assets/superadmin.svg');
   let managepermission = require('../assets/managepermission.png');
+
+  
   // let selectedUsersForPermission:any;
   let selectedGroupUsers:any[];
   let superA=false;
@@ -126,6 +128,9 @@ interface IMyComponentProps {
     const [IsSuperAdmin,setIsSuperAdmin]=useState(false);
 
     const [toggleManagePermissionCard,setToggleManagePermissionCard]=useState("No");
+    const manageUserAndPermissionImage = require('../assets/ManageUserandPermission.png');
+    const managefolderdeligation = require('../assets/ManageFolderDelegation.png');
+    const managesuperadmin = require('../assets/ManageSuperAdmin.png');
 
     const handleToggleCard=(event:any,name:any)=>{
       event.preventDefault();
@@ -1040,8 +1045,8 @@ interface IMyComponentProps {
                       const itemid = String(item.Id);
                       console.log(itemid, "itemsid");
                       console.log(imageData, "imagedata");
-                      const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmaniSpfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
-                      // const imageUrl = `https://alrostamanigroupae.sharepoint.com/sites/IntranetUAT/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                      // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmaniSpfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                      const imageUrl = `https://alrostamanigroupae.sharepoint.com/sites/IntranetUAT/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                       console.log(imageUrl, "imageurl");
                       return (
                         <div className="col-sm-3 col-md-3 mt-2">
@@ -1067,7 +1072,7 @@ interface IMyComponentProps {
                       </div>
                  
                     )} 
-                    {activeComponent === 'Create Devision' && (
+                    {activeComponent === 'Create Division' && (
                       <div className="position-relative">
                         <button className="btn back-to-admin" onClick={()=>handleReturnToMain('')}> Back to Home </button>
                         <Devision/>
@@ -1081,7 +1086,7 @@ interface IMyComponentProps {
                       </div>
                      
                     )} 
-                    {activeComponent === 'Map Devision & Department' && (
+                    {activeComponent === 'Map Division & Department' && (
                     <div className="position-relative">
                         <button className="btn back-to-admin" onClick={()=>handleReturnToMain('')}> Back to Home </button>
                         <EntityMapping/>
@@ -1106,7 +1111,7 @@ interface IMyComponentProps {
                           <a href="">
                                 <div className="card-master box1" onClick={(event)=>{handleToggleSuper(event,"ManageSuper")}}>
                                   <div className="icon">
-                                    <img className="CardImage" src={superadmin}/>
+                                    <img className="CardImage" src={managesuperadmin}/>
                                   </div>
                                   <p className="text-dark">Manage Super Admin</p>
                                 </div>
@@ -1121,7 +1126,7 @@ interface IMyComponentProps {
                                       }
                                       }>
                                       <div className="icon">
-                                        <img className="CardImage"  src={managepermission}/>
+                                        <img className="CardImage"  src={manageUserAndPermissionImage}/>
                                       </div>
                                       <p className="text-dark">Manage users and permission</p>
                                     </div>
@@ -1135,7 +1140,7 @@ interface IMyComponentProps {
                                       }
                                       }>
                                       <div className="icon">
-                                        <img className="CardImage"  src={managepermission}/>
+                                        <img className="CardImage"  src={managefolderdeligation}/>
                                       </div>
                                       <p className="text-dark">Manage Folder Deligation</p>
                                     </div>

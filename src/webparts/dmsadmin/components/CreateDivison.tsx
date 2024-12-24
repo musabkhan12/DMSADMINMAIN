@@ -233,7 +233,7 @@ const CreateDevision2: React.FC<BasicFormProps> = ({
         <div className={styles.DmsAdminForm}>
         <div className={styles.formcontainer}>            
             <div className={styles.apphier}>
-                <h1 className={styles.apptitle}>Create Devision</h1>
+                <h1 className={styles.apptitle}>Create Division</h1>
             </div>
             <hr className={styles.hrtag}></hr>
             <form id="createDivision" onSubmit={handleSubmit}>
