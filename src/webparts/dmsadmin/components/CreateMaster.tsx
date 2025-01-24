@@ -13,6 +13,7 @@ interface BasicFormProps {
     currentJobTitle:any,
     currentIsActive:any,
     onCancel:any,
+    IsExternal:any
 }
 
 let currentusername="";
@@ -22,6 +23,7 @@ const Basic: React.FC<BasicFormProps> = ({
     currentJobTitle,
     currentIsActive,
     onCancel,
+    IsExternal
 })=>{
 
     const sp: SPFI = getSP();
@@ -29,6 +31,7 @@ const Basic: React.FC<BasicFormProps> = ({
     console.log("currentId",currentId);
     const [jobTitle, setJobTitle] = useState(currentJobTitle || '');
     const [isActive, setIsActive] = useState(currentIsActive || '');
+    const [isExternal, setIsExternal] = useState(IsExternal || '');
     const [description,setDescription] = useState('');
     // const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [disableInput, setDisableInput]=useState(false);
@@ -98,7 +101,8 @@ const Basic: React.FC<BasicFormProps> = ({
         const newItem = {
             Title: jobTitle, 
             Active: isActive,
-            Description:description 
+            Description:description ,
+            IsExternal:isExternal
         };
         console.log(newItem);
 
@@ -316,6 +320,42 @@ const Basic: React.FC<BasicFormProps> = ({
                         </div>
                     </div>
                     </div>
+                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    <label className={styles.label} htmlFor="isExternal">
+                            Public<span style={{
+                          color:'red',
+                          fontWeight:"Bold"
+                        }}> *</span>
+                        </label>
+                        <div className={styles.radioContainer}>
+                        <div className={styles.radioContainer}>
+                            <div className={styles.radioItem}>
+                            <input
+                                type="radio"
+                                id="yesOption"
+                                name="isExternal"
+                                value="Yes"
+                                checked={isExternal === 'Yes'}
+                                onChange={(e) => setIsExternal(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="yesOption">Yes</label>
+                            </div>
+                            <div className={styles.radioItem}>
+                            <input
+                                type="radio"
+                                id="noOption"
+                                name="isExternal"
+                                value="No"
+                                checked={isExternal === 'No'}
+                                onChange={(e) => setIsExternal(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="noOption">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
                 </form>
         </div>
@@ -355,6 +395,7 @@ const BasicForm: React.FC<BasicFormProps> = ({
     currentJobTitle,
     currentIsActive,
     onCancel,
+    IsExternal
 })=>{ return (
         <Provider>
             <Basic
@@ -363,6 +404,7 @@ const BasicForm: React.FC<BasicFormProps> = ({
             currentJobTitle={currentJobTitle}
             currentIsActive={currentIsActive}
             onCancel={onCancel} 
+            IsExternal={IsExternal}
             />
         </Provider>
     );

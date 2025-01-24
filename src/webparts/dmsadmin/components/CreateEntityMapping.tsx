@@ -264,20 +264,30 @@ const CreateEntityMapping: React.FC<forMapping> = ({
             try {
                 const departmentData = await sp.web.lists.getByTitle('DepartmentMasterList').items.select('Title')();
                 const divisionData = await sp.web.lists.getByTitle('DivisionMasterList').items.select('Title')();
-                const masterData = await sp.web.lists.getByTitle('MasterSiteURL').items.select('Title')();
-
-                // setDepartmentList(departmentData.map((item) => item.Title));
-                // setDivisionList(divisionData.map((item) => item.Title));
-                // setMasterList(masterData.map((item) => item.Title));
+                const masterData = await getAllMasterData();
+                console.log(masterData);
+                
+                console.log('here is my master data ',masterData);
                 setDepartmentList(departmentData.filter(item => item.Title !== null).map(item => item.Title));
                 setDivisionList(divisionData.filter(item => item.Title !== null).map(item => item.Title));
-                setMasterList(masterData.filter(item => item.Title !== null).map(item => item.Title));
-
-               
-                
+                setMasterList(masterData.filter((item:any) => item.Title !== null).map((item:any) => item.Title));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+        };
+
+        const getAllMasterData = async () => {
+            let items:any = [];
+            let pagedItems = await sp.web.lists.getByTitle('MasterSiteURL').items.select('Title').getPaged();
+        
+            items = items.concat(pagedItems.results);
+        
+            while (pagedItems.hasNext) {
+                pagedItems = await pagedItems.getNext();
+                items = items.concat(pagedItems.results);
+            }
+        
+            return items;
         };
 
         getData();

@@ -61,6 +61,7 @@ const Entity = () => {
     const [currentEntityId, setCurrentEntityId] = React.useState<number | null>(null);
     const [currentJobTitle, setCurrentJobTitle] = React.useState('');
     const [currentIsActive, setCurrentIsActive] = React.useState('');
+    const [CurrentisExternal, setCurrentIsExternal] = React.useState('');
 
     const handleButtonClickShow = () => {
       setShowFirstDiv(false);
@@ -511,6 +512,7 @@ const Entity = () => {
                 currentId={currentEntityId}
                 currentJobTitle={currentJobTitle}
                 currentIsActive={currentIsActive}
+                IsExternal={CurrentisExternal}
                 onCancel={() =>{ 
                   setShowFirstDiv(true)
                   setRefresh(!refresh)

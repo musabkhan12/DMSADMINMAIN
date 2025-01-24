@@ -466,6 +466,7 @@ const approvalUserIds = seleccteduserforapproval.map((approvalUser: any) =>
 );
   const addedItem = await sp.web.lists.getByTitle("DMSFolderDeligationApprovalMaster").items.add({
     Title: selectedEntityForPermission.value,
+    SiteTitle: selectedEntityForPermission.value,
     CurrentUser: user.email,
     ApprovalsId: approvalUserIds // Ensure this is an array of objects with Key properties
     

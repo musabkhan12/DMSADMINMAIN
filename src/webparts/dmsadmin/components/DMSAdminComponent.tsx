@@ -1046,6 +1046,7 @@ interface IMyComponentProps {
                       console.log(itemid, "itemsid");
                       console.log(imageData, "imagedata");
                       // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmaniSpfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                      // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmani/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                       const imageUrl = `https://alrostamanigroupae.sharepoint.com/sites/IntranetUAT/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                       console.log(imageUrl, "imageurl");
                       return (
