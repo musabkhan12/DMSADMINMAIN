@@ -330,14 +330,15 @@ const CreateEntityMapping: React.FC<forMapping> = ({
         <>
             <div className={styles.DmsAdminForm}>
                 <div className={styles.formcontainer}>
-                    <div className={styles.apphier}>
+                    {/* <div className={styles.apphier}>
                         <h1 className={styles.apptitle}>Entity Map Division & Department</h1>
                     </div>
-                    <hr className={styles.hrtag}></hr>
+                    <hr className={styles.hrtag}></hr> */}
                     <form id="createMaster" onSubmit={handleSubmit}>
-                        <div className={classNames(styles.formgroup, styles.topformgroup)}>
+                    <div className="p-4">
                             {/* Title Input */}
-                            <div className={classNames(styles.halfrightform, styles.form1)}>
+                            <div className='row'>
+                            <div className="col-sm-4 mb-3">
                                 <label className={styles.label} htmlFor="Title">
                                     Title
                                 </label>
@@ -377,10 +378,8 @@ const CreateEntityMapping: React.FC<forMapping> = ({
                                     </div>
                                 )}
                             </div>
-
-                            {/* Division Input (Disabled until Title is selected) */}
-                            <div className={classNames(styles.halfrightform, styles.form1)}>
-                                <label className={styles.label} htmlFor="Division">
+                            <div className="col-sm-4 mb-3">
+                            <label className={styles.label} htmlFor="Division">
                                     Division
                                 </label>
                                 <input
@@ -419,10 +418,11 @@ const CreateEntityMapping: React.FC<forMapping> = ({
                                             ))}
                                     </div>
                                 )}
-                            </div>
 
-                            {/* Department Input (Disabled until Division is selected) */}
-                            <div className={classNames(styles.halfrightform, styles.form1)}>
+
+                                </div>
+
+                                <div className='col-sm-4 mb-3'>
                                 <label className={styles.label} htmlFor="Department">
                                     Department
                                 </label>
@@ -461,7 +461,18 @@ const CreateEntityMapping: React.FC<forMapping> = ({
                                             ))}
                                     </div>
                                 )}
+
+                                </div>
+
+
+
                             </div>
+
+                            {/* Division Input (Disabled until Title is selected) */}
+                            
+
+                            {/* Department Input (Disabled until Division is selected) */}
+                         
                         </div>
                     </form>
                 </div>

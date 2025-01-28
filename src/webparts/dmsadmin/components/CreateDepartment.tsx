@@ -206,14 +206,14 @@ const CreateDepartment: React.FC<BasicFormProps> = ({
         
     <>  
         <div className={styles.DmsAdminForm}>
-        <div className={styles.formcontainer}>            
-            <div className={styles.apphier}>
+        <div className="p-4">            
+            {/* <div className={styles.apphier}>
                 <h1 className={styles.apptitle}>Create Department</h1>
             </div>
-            <hr className={styles.hrtag}></hr>
+            <hr className={styles.hrtag}></hr> */}
             <form id="createDepartment" onSubmit={handleSubmit}>
-                <div className={classNames(styles.formgroup, styles.topformgroup)}>
-                    <div className={classNames(styles.halfrightform, styles.form1, styles.createdepartmenthalf)}>
+                <div className='row'>
+                    <div className='col-sm-4'>
                     <label className={styles.label} htmlFor="jobTitle">
                             {dynamicHeading}<span style={{
                           color:'red',
@@ -229,7 +229,7 @@ const CreateDepartment: React.FC<BasicFormProps> = ({
                             required
                         />
                     </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    <div className='col-sm-4'>
                     <label className={styles.label} htmlFor="isActive">
                             Active<span style={{
                           color:'red',
@@ -248,7 +248,7 @@ const CreateDepartment: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsActive(e.target.value)}
                                 required
                             />
-                            <label htmlFor="yesOption">Yes</label>
+                            <label htmlFor="yesOption" className='newf'>Yes</label>
                             </div>
                             <div className={styles.radioItem}>
                             <input
@@ -260,7 +260,7 @@ const CreateDepartment: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsActive(e.target.value)}
                                 required
                             />
-                            <label htmlFor="noOption">No</label>
+                            <label htmlFor="noOption" className='newf'>No</label>
                             </div>
                         </div>
                     </div>

@@ -531,3 +531,8 @@ tbody tr:nth-child(odd)
 {
   max-width: unset !important;
 }
+@media(max-width:640px){
+  .app-menu{
+    top: 79px !important;
+  }
+}

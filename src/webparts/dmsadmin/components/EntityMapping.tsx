@@ -364,13 +364,13 @@ const [refresh,setRefresh]=React.useState(false);
             <div className='padd-right1 mt-0'>
           <div className={styles.actions}>
            
-            <a
+            <div
               onClick={handleButtonClickShow}
               className={styles.addbuttonargform}
             >
             
               <p className={styles.Addtext}>Create New</p>
-            </a>
+            </div>
           </div>
           </div>
           </div>
@@ -385,9 +385,9 @@ const [refresh,setRefresh]=React.useState(false);
                     
                     <div className="">
                       <span>S.No.</span>
-                      <span onClick={() => handleSortChange('SNo')}>
+                      {/* <span onClick={() => handleSortChange('SNo')}>
                         <FontAwesomeIcon icon={faSort} />
-                      </span>
+                      </span> */}
                     </div>
                     {/* <div className="bd-highlight">
                       <input
@@ -523,7 +523,7 @@ const [refresh,setRefresh]=React.useState(false);
                       {item.Departmentlookup?.Title || ''}
                       </td>
                       <td style={{minWidth: '70px', maxWidth: '70px' }}>
-                          <div className='stausbg'>
+                          <div className='stausbg newsta'>
                           {item.Entitylookup?.Active === "Yes" ? 'Active' : 'Inactive'}
                         </div>
                         </td>
@@ -572,7 +572,7 @@ const [refresh,setRefresh]=React.useState(false);
         <div className={styles.argform}>
           <div className='row' style={{marginBottom:"20px"}}>
           <div className="col-md-7">
-            <div className="page-title fw-bold mb-1 font-20">Create Mapping 2</div>
+            <div className="page-title fw-bold mb-1 font-20">Create Mapping</div>
             </div>
             <div className="col-md-5">
               <div className='padd-right1 mt-0'>

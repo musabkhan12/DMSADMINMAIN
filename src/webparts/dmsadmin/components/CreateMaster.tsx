@@ -232,12 +232,12 @@ const Basic: React.FC<BasicFormProps> = ({
     <>  
       <div className={styles.DmsAdminForm}>
         <div className={styles.formcontainer}>            
-            <div className={styles.apphier}>
+            {/* <div className={styles.apphier}>
                 <h1 className={styles.apptitle}>Create Entity</h1>
-            </div>
-            <hr className={styles.hrtag}></hr>
+            </div> */}
+       
             <form id="createMaster" onSubmit={handleSubmit}>
-                <div className={classNames(styles.formgroup, styles.topformgroup)}>
+                <div className="p-4">
                     {/* <div className={classNames(styles.halfleftform, styles.form1)}>
                         <label className={styles.label} htmlFor="company">
                             Name
@@ -252,7 +252,8 @@ const Basic: React.FC<BasicFormProps> = ({
                             required
                         />
                     </div> */}
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    <div className='row'>
+                 <div className="col-sm-4 mb-3">
                     <label className={styles.label} htmlFor="jobTitle">
                             Title<span style={{
                           color:'red',
@@ -268,23 +269,8 @@ const Basic: React.FC<BasicFormProps> = ({
                             required
                         />
                     </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
-                    <label className={styles.label} htmlFor="isActive">
-                            Description<span style={{
-                          color:'red',
-                          fontWeight:"Bold"
-                        }}> *</span>
-                        </label>
-                        <input
-                            className={styles.inputform1}
-                            id="description"
-                            name="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    
+                    <div className="col-sm-3 mb-3">
                     <label className={styles.label} htmlFor="isActive">
                             Active<span style={{
                           color:'red',
@@ -303,7 +289,7 @@ const Basic: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsActive(e.target.value)}
                                 required
                             />
-                            <label htmlFor="yesOption">Yes</label>
+                            <label htmlFor="yesOption" className='newf'>Yes</label>
                             </div>
                             <div className={styles.radioItem}>
                             <input
@@ -315,12 +301,12 @@ const Basic: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsActive(e.target.value)}
                                 required
                             />
-                            <label htmlFor="noOption">No</label>
+                            <label htmlFor="noOption" className='newf'>No</label>
                             </div>
                         </div>
                     </div>
                     </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    <div className="col-sm-3 mb-3">
                     <label className={styles.label} htmlFor="isExternal">
                             Public<span style={{
                           color:'red',
@@ -339,7 +325,7 @@ const Basic: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsExternal(e.target.value)}
                                 required
                             />
-                            <label htmlFor="yesOption">Yes</label>
+                            <label htmlFor="yesOption" className='newf'>Yes</label>
                             </div>
                             <div className={styles.radioItem}>
                             <input
@@ -351,20 +337,38 @@ const Basic: React.FC<BasicFormProps> = ({
                                 onChange={(e) => setIsExternal(e.target.value)}
                                 required
                             />
-                            <label htmlFor="noOption">No</label>
+                            <label htmlFor="noOption" className='newf'>No</label>
                             </div>
                         </div>
                     </div>
                     </div>
+
+                    <div className="col-sm-12 mb-1">
+                    <label className={styles.label} htmlFor="isActive">
+                            Description<span style={{
+                          color:'red',
+                          fontWeight:"Bold"
+                        }}> *</span>
+                        </label>
+                        <input style={{height:'80px'}}
+                            className={styles.inputform1}
+                            id="description"
+                            name="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                        />
+                    </div>
+                </div>
                 </div>
                 </form>
         </div>
         
-        <div className={styles.approvecancel}>
+        <div className="mt-2 text-center  mb-2">
                     <button type="submit" className={styles.backbuttonform1} onClick={handleSubmit}>
                         <p className={styles.Addtext}>Submit</p>
                     </button>
-                    <button type="button" className={styles.addbuttonargform1}
+                    <button type="button" style={{marginBottom:'15px'}} className={styles.addbuttonargform1}
                         onClick={onCancel}
                     >
                         <p 

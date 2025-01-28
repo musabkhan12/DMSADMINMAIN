@@ -7,6 +7,7 @@
   display: inline-flex;
   padding-left: 0px;
 }
+
 .bd-highlight{height: 30px;}
 .mainsidebardms{
   width: 19%;
@@ -66,6 +67,10 @@
     height: 41px;
     border-radius: 4px;
     font-size: 14px; z-index: 1;
+}
+.back-to-admin:hover{
+  background: #008751 !important;
+  color: #fff !important;
 }
 
 
@@ -746,6 +751,7 @@ top: 0rem!important;
   font-weight: bold;
   color: #008751;
 }
+
 .mtbalenew{
   width: 100%;
     position: relative;
@@ -822,8 +828,51 @@ text-align: center;
     background: rgba(0, 135, 81, 0.20) !important;
     font-weight: 500 !important;
     color: #008751;
-    padding: 1px 5px !important; text-align: center;
+    padding: 4px 5px !important; text-align: center;
     
     
 }
 
+a.addbuttonargform:hover{
+  color: #fff !important;
+  }
+  .mtbalenew tr:nth-child(odd):hover td
+  {
+    background: #ececec !important;
+  }
+  @media(max-width:640px){
+    .back-to-admin{
+      font-size: 12px;
+    height: 41px; position: relative; float:right;
+    padding: 6px 7px;
+    }
+    .padd-right1 {
+      padding-right: 13px;
+      top: -36px;
+      position: relative;
+  }
+  .addbuttonargform {
+    background-color: #1fb0e5;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    display: flex
+;
+    height: 40px;
+    margin-left: 10px;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 30px;
+}
+.mtbalenew {overflow: auto;}
+.mtbalenew tbody{
+  overflow: visible !important;
+}
+.manage-master .col-sm-3 {
+  width: 100% !important;
+}
+.addbuttonargform{font-size: 12px !important; padding: 8px 4px; line-height: 30px;}
+.Addtext{font-size: 12px !important;}
+  }

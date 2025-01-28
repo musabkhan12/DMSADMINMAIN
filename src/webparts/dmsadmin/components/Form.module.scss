@@ -905,7 +905,7 @@ cursor: pointer;
 }
 
 .Addtext{
-  margin: 0px 0px 10px 0px;
+  margin: 1px 0px 0px 0px; font-size: 14px;
 }
 .editdeleteicons{
   // display: flex;
@@ -1333,4 +1333,9 @@ color: black;
 }
 .tabledata{
   text-align: left !important;
+}
+@media(max-width:640px){
+  .addbuttonargform{font-size: 12px !important; padding: 8px 4px; line-height: 30px;}
+  .Addtext{font-size: 12px !important; margin-top: -2px !important;}
+  .backbuttonform{    padding: 13px !important;}
 }

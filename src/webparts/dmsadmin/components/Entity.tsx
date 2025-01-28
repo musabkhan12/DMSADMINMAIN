@@ -239,7 +239,7 @@ const Entity = () => {
                 />
                 <p className={styles.Addtext}>Back</p>
               </a> */}
-              <a
+              <div
                 onClick={handleButtonClickShow}
                 className={styles.addbuttonargform}
               >
@@ -248,7 +248,7 @@ const Entity = () => {
                   src={require("../assets/plus.png")}
                 /> */}
                 <p className={styles.Addtext}>Create New</p>
-              </a>
+              </div>
             </div>
             </div>
           </div>
@@ -319,9 +319,9 @@ const Entity = () => {
  
                     <div className="pb-0">
                       <span>S.No.</span>&nbsp;
-                      <span onClick={() => handleSortChange('SNo')}>
+                      {/*<span onClick={() => handleSortChange('SNo')}>
                         <FontAwesomeIcon icon={faSort} />
-                      </span>
+                      </span> */}
                     </div>
                     {/* <div className="bd-highlight">
                       <input
@@ -433,7 +433,7 @@ const Entity = () => {
                         {item.SiteURL || 'No URL'}
                         </td>
                         <td style={{minWidth: '70px', maxWidth: '70px' }}>
-                          <div className='stausbg'>
+                          <div className='stausbg newsta'>
                         {item.Active === "Yes" ? 'Active' : 'Inactive'}
                         </div>
                         </td>
@@ -494,7 +494,7 @@ const Entity = () => {
             <div className='col-md-5'>
              <div className='padd-right1 mt-0'>
             <div className={styles.actions}>
-              <a
+              <div
                 className={styles.backbuttonform}
                 onClick={handleBackButtonClick}
               >
@@ -503,7 +503,7 @@ const Entity = () => {
                 //   src={require("../assets/left.png")}
                 />
                 <p className={styles.Addtext}>Back</p>
-              </a>
+              </div>
             </div>
             </div>
             </div>

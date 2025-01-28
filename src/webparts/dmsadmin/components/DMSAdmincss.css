@@ -85,4 +85,30 @@ a:hover
 {
   top: 0rem!important;
 }
+label{color: #6c757d !important;
+    font-size: .875rem !important;
+    font-weight: 400 !important;
+    margin-bottom: .5rem;
+  }
+  .newsta{
+    border-radius: 30px;
+    font-size: 14px;
+  }
+  .form-control, .form-select, textarea {
+    border: 1px solid #ccc !important;
+    color: #212529 !important;
+    font-size: 1rem;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    padding: 7px 10px;
+  }
+  input::placeholder, textarea::placeholder{
+    color: #212529 !important;  font-size: 1rem !important;
+    font-weight: 500 !important;
+  }
 
+@media(max-width:640px){
+    .manage-master .col-sm-3{ width:100% !important;}
+    .addbuttonargform{font-size: 12px !important; padding: 8px 4px; line-height: 30px;}
+.Addtext{font-size: 12px !important;}
+}

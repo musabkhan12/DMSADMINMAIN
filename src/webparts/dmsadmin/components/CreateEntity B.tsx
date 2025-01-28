@@ -55,9 +55,9 @@ let currentusername="";
     <>  
         <div className={styles.DmsAdminForm}>
         <div className={styles.formcontainer}>            
-            <div className={styles.apphier}>
+            {/* <div className={styles.apphier}>
                 <h1 className={styles.apptitle}>Create Entity</h1>
-            </div>
+            </div> */}
             <hr className={styles.hrtag}></hr>
             <form id="createMaster" onSubmit={handleSubmit}>
                 <div className={classNames(styles.formgroup, styles.topformgroup)}>
@@ -74,7 +74,8 @@ let currentusername="";
                             name="company"
                         />
                     </div> */}
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    <div className='row'>
+                    <div className="col-sm-4">
                     <label className={styles.label} htmlFor="jobTitle">
                             Title<span style={{
                           color:'red',
@@ -90,19 +91,8 @@ let currentusername="";
                             required
                         />
                     </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
-                        <label className={styles.label} htmlFor="description">
-                            Description
-                        </label>
-                        <input
-                            className={styles.inputform1}
-                            id="description"
-                            name="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </div>
-                    <div className={classNames(styles.halfrightform, styles.form1)}>
+                    
+                    <div className="col-sm-4">
                         <label className={styles.label} htmlFor="isActive">
                             Active
                         </label>
@@ -131,6 +121,20 @@ let currentusername="";
                             <label htmlFor="noOption">No</label>
                             </div>
                         </div>
+                    </div>
+                    </div>
+
+                    <div className="col-sm-12">
+                        <label className={styles.label} htmlFor="description">
+                            Description
+                        </label>
+                        <input
+                            className={styles.inputform1}
+                            id="description"
+                            name="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
                     </div>
                     </div>
                 </div>

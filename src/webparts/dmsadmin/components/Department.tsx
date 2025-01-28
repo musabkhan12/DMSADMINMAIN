@@ -286,7 +286,7 @@ const Department = () => {
                 />
                 <p className={styles.Addtext}>Back</p>
               </a> */}
-              <a 
+              <div 
                 onClick={handleButtonClickShow}
                 className={styles.addbuttonargform}
               >
@@ -295,7 +295,7 @@ const Department = () => {
                   src={require("../assets/plus.png")}
                 /> */}
                 <p className={styles.Addtext}>Create New</p>
-              </a>
+              </div>
             </div>
             </div>
             </div>
@@ -366,9 +366,9 @@ const Department = () => {
                     
                     <div className="">
                       <span>S.No.</span>&nbsp;
-                      <span onClick={() => handleSortChange('SNo')}>
+                      {/* <span onClick={() => handleSortChange('SNo')}>
                         <FontAwesomeIcon icon={faSort} />
-                      </span>
+                      </span> */}
                     </div>
                     {/* <div className="bd-highlight">
                       <input
@@ -478,7 +478,7 @@ const Department = () => {
                         {item.Title || 'No Title'}
                         </td>
                         <td style={{minWidth: '70px', maxWidth: '70px' }}>
-                          <div className='stausbg'>
+                          <div className='stausbg newsta'>
                         {item.Active === "Yes" ? 'Active' : 'Inactive'}
                         </div>
                         </td>

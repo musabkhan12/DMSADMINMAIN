@@ -881,6 +881,7 @@ height: 40px;
 text-decoration: none;
 cursor: pointer;
 }
+.addbuttonargform:hover p{color: #fff !important;}
 .addbuttonargform1:hover{
   text-decoration: none;
 }
@@ -897,7 +898,9 @@ height: 40px;
 text-decoration: none;
 cursor: pointer;
 }
-
+.addbuttonargform1:hover{
+  background-color: #008751;
+}
 .backimg{
   height: 22px;
   // margin-top: 4px;
@@ -1475,4 +1478,41 @@ color: black;
     padding: 2px 5px !important; text-align: center;
     
     
+}
+.newsta{
+  border-radius: 30px;
+  font-size: 14px;
+}
+.form-control, .form-select, textarea {
+  border: 1px solid #ccc !important;
+  color: #212529 !important;
+  font-size: 1rem;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  padding: 7px 10px;
+}
+input::placeholder, textarea::placeholder,.radioItem label, label.newf{
+  color: #212529 !important;  font-size: 1rem !important;
+  font-weight: 500 !important;
+}
+input[type=password]:focus, input[type=text]:focus, input:not([type]):focus, select:focus, textarea:focus, .sp-peoplepicker-topLevelFocus, .ms-inputBoxActive, .ms-inputBox.ms-inputBoxActive:hover{
+  border-color: #ccc !important;
+}
+input[type=password], input[type=text], input[type=file], input:not([type]), select, textarea, .sp-peoplepicker-topLevel, .sp-peoplepicker-topLevelDisabled, .sp-peoplepicker-autoFillContainer, .ms-inputBox{
+  color: #212529 !important;  font-size: 1rem !important;
+  font-weight: 500 !important;
+}
+input[type=password][disabled], input[type=text][disabled], input[type=file][disabled], input:not([type])[disabled], textarea[disabled], select[disabled], .sp-peoplepicker-topLevelDisabled, .ms-inputBoxDisabled{
+  color: #212529 !important;  font-size: 1rem !important;
+  font-weight: 500;  border: 1px solid #ccc !important;
+}
+a.addbuttonargform:hover{
+color: #fff !important;
+}
+.addbuttonargform:hover{
+  background-color: #008751 !important;
+}
+@media(max-width:640px){
+  .addbuttonargform{font-size: 12px !important; padding: 8px 4px; line-height: 30px;}
+  .Addtext{font-size: 12px !important;}
 }
