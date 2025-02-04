@@ -63,7 +63,7 @@ const Basic: React.FC<BasicFormProps> = ({
         }
 
         // Remove alphanumeric characters and also check the limit start
-        const nonAlphaNumericForEntity = jobTitle.replace(/[^a-zA-Z0-9 _-]/g, '');
+        const nonAlphaNumericForEntity = jobTitle.replace(/[^a-zA-Z0-9 -]/g, '');
         // const nonAlphaNumericDescription = description.replace(/[^a-zA-Z0-9 ]/g, '');
         if (jobTitle !== nonAlphaNumericForEntity) {
             console.log('Special characters are not allowed in entity.');

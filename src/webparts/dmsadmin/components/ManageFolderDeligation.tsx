@@ -448,6 +448,15 @@ const ManageFolderDeligation = (props:any) => {
 // If selectedUsersForPermission is a single object
 const user = selectedUsersForPermission;
 
+const getItem = await sp.web.lists.getByTitle("DMSFolderDeligationApprovalMaster").items.select("*").filter(`CurrentUser eq '${user.email}' and SiteTitle eq '${selectedEntityForPermission.value}'`)();
+
+console.log("getItem",getItem);
+
+if(getItem.length > 0){
+  Swal.fire("User Already Exists", "This user is already a member of the Delegation group.", "warning");
+  return
+}
+
 try {
   const userObj = await sp.web.ensureUser(user.email);
   console.log("userObj", userObj);
@@ -485,7 +494,7 @@ const approvalUserIds = seleccteduserforapproval.map((approvalUser: any) =>
     handleGroupsSelect(selectedGropuForPermission);
   };
 
-const confirmDelete=(group:any,userId:any,groupName:any)=>{
+const confirmDelete=(group:any,userId:any,groupName:any,userEmail:any,siteTitle:any)=>{
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -497,6 +506,15 @@ const confirmDelete=(group:any,userId:any,groupName:any)=>{
     }).then(async(result) => {
       if (result.isConfirmed) {
         await group.users.removeById(userId);
+
+        const getItem = await sp.web.lists.getByTitle("DMSFolderDeligationApprovalMaster").items.select("*").filter(`CurrentUser eq '${userEmail}' and SiteTitle eq '${siteTitle}'`)();
+
+        console.log("getItem",getItem);
+
+        if(getItem.length > 0){
+          await sp.web.lists.getByTitle("DMSFolderDeligationApprovalMaster").items.getById(getItem[0].ID).delete()
+          console.log("user successfully removed from the lists")
+        }
         console.log(`User with ID ${userId} has been removed from the group '${groupName}'`);
           // to refresh the user table
           // handleEntitySelect(selectedEntityForPermission);
@@ -509,15 +527,17 @@ const confirmDelete=(group:any,userId:any,groupName:any)=>{
       }
     });
   }
-const handleDeleteUser=async(userId:any,groupName:any)=>{
+const handleDeleteUser=async(userId:any,groupName:any,item:any)=>{
     console.log("UserId",userId);
+    console.log("item",item);
+    console.log("selected entity",selectedEntityForPermission)
     try {
 
         const subsitecontext=await sp.site.openWebById(selectedEntityForPermission.SiteID);
         // Get the group by name
         const group =subsitecontext.web.siteGroups.getByName(groupName);
         // Remove the user from the group using their userId
-        confirmDelete(group,userId,groupName);
+        confirmDelete(group,userId,groupName,item.email,selectedEntityForPermission.value);
         // await group.users.removeById(userId);
     } catch (error) {
         console.error("Error removing user from group: ", error);
@@ -720,7 +740,8 @@ const handleDeleteUser=async(userId:any,groupName:any)=>{
                                   : groupDetails?.value || ''}
                               </td>
                               <td>
-                                {groupDetails?.Description || ''}
+                                {/* {groupDetails?.Description || ''} */}
+                                Can create folder(folder created by user will go for approval) and can add, view, update documents.
                               </td>
                             </tr>
                         </tbody>
@@ -770,10 +791,12 @@ const handleDeleteUser=async(userId:any,groupName:any)=>{
                                     {item.groupName || ''}
                                     </td>
                                     <td>
-                                    {item.permission || ''}
+                                    {/* {item.permission || ''} */}
+                                    <span>Folder Deligation</span>
                                     </td>
                                     <td>
-                                    {item.Descirption || ''}
+                                    {/* {item.Descirption || ''} */}
+                                    <span>Can create folder(folder created by user will go for approval) and can add, view, update documents.</span>
                                     </td>
                                     <td style={{minWidth:'65px', maxWidth:'65px'}}>
                                     <img
@@ -781,7 +804,7 @@ const handleDeleteUser=async(userId:any,groupName:any)=>{
                                         src={require("../assets/del.png")}
                                         alt="Delete"
                                         onClick={(event)=>{
-                                            handleDeleteUser(item.userId,item.groupName)
+                                            handleDeleteUser(item.userId,item.groupName,item)
                                         }}
                                     />
                                     </td>
