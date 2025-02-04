@@ -25,7 +25,7 @@ import CreateEntity from './CreateMaster';
 import { format } from '@fluentui/react';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import Swal from 'sweetalert2';
 const Entity = () => {
 
   const sp: SPFI = getSP();
@@ -43,7 +43,7 @@ const Entity = () => {
             console.log("Fetchin Entity");
             const entity = await sp.web.lists
             .getByTitle('MasterSiteURL')
-            .items.select("SiteURL","Title","Active","Created","Description","UniqueId","Author/Title","Id").expand("Author").orderBy("Modified", false)();
+            .items.select("SiteURL","Title","Active","Created","Description","UniqueId","Author/Title","Id","SiteID").expand("Author").orderBy("Modified", false)();
             setEntityDetails(entity);
             console.log("Fetched Entity",entity);
         }
@@ -222,6 +222,99 @@ const Entity = () => {
         </nav>
       );
     };
+
+    const handleDeleteEntity=async(item:any)=>{
+      console.log("Entity Item",item);
+      Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Removed it!"
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+             
+              try {
+                // Delete the subsite
+            const subsite=await sp.site.openWebById(item.SiteID);
+            const deletedItem=await subsite.web.delete()
+            console.log("deletedItem of subsite",deletedItem);
+            // Delete the list by its name
+             const itemDeletedList=await sp.web.lists.getByTitle(`DMS${item.Title}FileMaster`).delete();
+             console.log("itemDeletedList",itemDeletedList);
+
+            const getItemFromEntityDivisionDepartmentMppingList=await sp.web.lists.getByTitle("EntityDivisionDepartmentMappingMasterList").items.select("*","Entitylookup/Title").filter(`Entitylookup/Title eq '${item.Title}'`).expand('Entitylookup')();
+            // const getItemFromEntityDivisionDepartmentMppingList = await sp.web.lists
+            // .getByTitle("EntityDivisionDepartmentMappingMasterList")
+            // .items.select(
+            //   "Entitylookup/Title",
+            //   "Entitylookup/Active",
+            //   "Devisionlookup/Title",
+            //   "Departmentlookup/Title",
+            //   "Devisionlookup/Active",
+            //   "Departmentlookup/Active",
+            //   "Id",
+            //   "UniqueId",
+            //   "Created",
+            //   "Author/Title"
+            // )
+            // .expand("Entitylookup", "Devisionlookup", "Departmentlookup","Author")();
+            console.log("getItemFromEntityDivisionDepartmentMppingList",getItemFromEntityDivisionDepartmentMppingList);
+
+            const getItemsFromMasterSiteUrl=await sp.web.lists.getByTitle("MasterSiteURL").items.select("*").filter(`Title eq '${item.Title}'`)();
+            console.log("getItemsFromMasterSiteUrl",getItemsFromMasterSiteUrl);
+
+            if(getItemsFromMasterSiteUrl.length > 0){
+              for(const item of getItemsFromMasterSiteUrl){
+                try {
+                  const deletedData=await sp.web.lists.getByTitle("MasterSiteURL").items.getById(item.ID).delete()
+                  console.log("Item deleted from dmsfoldermaster list",deletedData);
+                } catch (error) {
+                  console.log("Error in deleting the item from dmsfoldermasterlist",error);
+                }
+              }
+            }
+
+            const getItemsFromDMSFolderMaster=await sp.web.lists.getByTitle("DMSFolderMaster").items.select("*").filter(`SiteTitle eq '${item.Title}'`)();
+            console.log("getItemsFromDMSFolderMaster",getItemsFromDMSFolderMaster);
+
+            if(getItemsFromDMSFolderMaster.length > 0){
+              for(const item of getItemsFromDMSFolderMaster  ){
+                try {
+                  const deletedData=await sp.web.lists.getByTitle("DMSFolderMaster").items.getById(item.ID).delete()
+                  console.log("Item deleted from dmsfoldermaster list",deletedData);
+                } catch (error) {
+                  console.log("Error in deleting the item from dmsfoldermasterlist",error);
+                }
+                
+              }
+            }
+
+            const getItemsFromDMSFolderPrivacy=await sp.web.lists.getByTitle("DMSFolderPrivacy").items.select("*").filter(`SiteName eq '${item.Title}'`)();
+            console.log("getItemsFromDMSFolderPrivacy",getItemsFromDMSFolderPrivacy);
+
+            const getItemsFromDMSPreviewFormMaster=await sp.web.lists.getByTitle("DMSPreviewFormMaster").items.select("*").filter(`SiteName eq '${item.Title}'`)();
+            console.log("getItemsFromDMSPreviewFormMaster",getItemsFromDMSPreviewFormMaster);
+
+            const getItemsFromDMSFolderPermissionMaster=await sp.web.lists.getByTitle("DMSFolderPermissionMaster").items.select("*").filter(`SiteName eq '${item.Title}'`)();
+            console.log("getItemsFromDMSFolderPermissionMaster",getItemsFromDMSFolderPermissionMaster);
+
+            setRefresh(!refresh);
+              Swal.fire({
+                title: "Removed!",
+                text: `${item.Title} Suucessfuly Removed.`,
+                icon: "success"
+              });
+              } catch (error) {
+                console.log("Error in deleting the subsite",error);
+              }
+            
+            }
+          });
+    }
+
   return (
 <div>
 {showFirstDiv ? (
@@ -452,6 +545,12 @@ const Entity = () => {
                             src={require("../assets/edit.png")}
                             alt="Edit"
                             onClick={() => handleEditClick(item)}
+                        />
+                         <img
+                            className={styles.deleteicon}
+                            src={require("../assets/del.png")}
+                            alt="Delete"
+                            onClick={() => handleDeleteEntity(item)}
                         />
                         </td>
                     </tr>
