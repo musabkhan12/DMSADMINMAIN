@@ -583,7 +583,7 @@ siteUrl: string;
             break;
           case "Contribute":
             permission = "Contribute";
-            description = "Can view, add, update, and delete documents.";
+            description = "Can view, add, update, and download documents.";
             break;
           case "Read":
             permission = "Read";
@@ -595,15 +595,15 @@ siteUrl: string;
             break;
           case "Initiator":
             permission = "Initiator";
-            description = "Can view, add, update, and delete documents.";
+            description = "Can view, add, update, and download documents.";
             break;
           case "Approval":
             permission = "Approval";
-            description = "Can view, add, update, and delete documents.";
+            description = "Can view, add, update, and download documents.";
             break;
           case "AllUsers":
             permission = "AllUsers";
-            description = "Can view, add, update, and delete documents.";
+            description = "Can view, add, update, and download documents.";
             break;
           default:
             permission = "Unknown";
@@ -1072,9 +1072,12 @@ const Pagination = ( { currentPage, totalPages, handlePageChange }: PaginationPr
                     const itemid = String(item.Id);
                     console.log(itemid, "itemsid");
                     console.log(imageData, "imagedata");
+                    const siteUrl = window.location.origin;
+                    let locationPath=window.location.pathname.match(/\/sites\/[^\/]+/)[0];
                     // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmaniSpfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                     // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmani/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
-                    const imageUrl = `https://alrostamanigroupae.sharepoint.com/sites/IntranetUAT/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                    // const imageUrl = `https://officeindia.sharepoint.com/sites/AlRostmanispfx2/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
+                    const imageUrl = `${siteUrl}${locationPath}/_api/v2.1/sites('${SITEID},${WEBID}')/lists('${LISTID}')/items('${itemid}')/attachments('${imageData?.fileName}')/thumbnails/0/c3000x2000/content?prefer=noredirect,closestavailablesize`;
                     console.log(imageUrl, "imageurl");
                     return (
                       <div className="col-sm-3 col-md-3 mt-2">

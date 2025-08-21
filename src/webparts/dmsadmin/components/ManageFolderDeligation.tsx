@@ -796,7 +796,7 @@ const handleDeleteUser=async(userId:any,groupName:any,item:any)=>{
                                     </td>
                                     <td>
                                     {/* {item.Descirption || ''} */}
-                                    <span>Can create folder(folder created by user will go for approval) and can add, view, update documents.</span>
+                                    <span>Can create folder(folder created by user will go for approval) and can add, view, update , download documents.</span>
                                     </td>
                                     <td style={{minWidth:'65px', maxWidth:'65px'}}>
                                     <img

@@ -12,6 +12,8 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fluentui/react": "^8.106.4",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -22,6 +24,7 @@
     "@microsoft/sp-office-ui-fabric-core": "1.19.0",
     "@microsoft/sp-property-pane": "1.19.0",
     "@microsoft/sp-webpart-base": "1.19.0",
+    "@mui/material": "^5.16.7",
     "@pnp/graph": "^3.25.0",
     "@pnp/logging": "^3.21.0",
     "@pnp/odata": "^2.15.0",

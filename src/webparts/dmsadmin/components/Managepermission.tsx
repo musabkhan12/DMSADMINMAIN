@@ -118,16 +118,16 @@ export const ManagePermission = (props:any) => {
                     setDescription("View - Can only view content.");
                     break;
                 case 'Contribute':
-                    setDescription("Contribute - Can view, add, update, and delete documents.");
+                    setDescription("Contribute - Can view, add, update and download documents.");
                     break;
                 case 'Initiator':
-                    setDescription("Initiator - Can view, add, update and delete documents.");
+                    setDescription("Initiator - Can view, add, update and download documents.");
                     break;
                 case 'Approval':
-                    setDescription("Approval - Can view, add, update and delete documents.");
+                    setDescription("Approval - Can view, add, update and download documents.");
                     break;
                 case 'AllUsers':
-                    setDescription("AllUsers - Can view, add, update and delete documents.");
+                    setDescription("AllUsers - Can view, add, update and download documents.");
                     break;
                 default:
                     setDescription("Unknown role.");

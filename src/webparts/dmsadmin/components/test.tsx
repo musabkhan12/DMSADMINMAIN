@@ -15,6 +15,8 @@
   import "@pnp/sp/webs";
   import "@pnp/sp/folders";
   import "@pnp/sp/files";
+  import { IFileInfo } from "@pnp/sp/presets/all";
+  import { IFile } from '@pnp/sp/files';
   import "@pnp/sp/sites"
   import "@pnp/sp/presets/all"
   import "@pnp/sp/webs";
@@ -26,7 +28,7 @@
    import "../../verticalSideBar/components/VerticalSidebar.scss";
   import "./dmscss.css";
   import { useState , useRef , useEffect} from "react";
-
+  import { RenderListDataOptions } from "@pnp/sp/lists";
   
   import {IDmsMusaibProps} from './IDmsMusaibProps'
 
@@ -34,191 +36,233 @@ import "./testcss.css";
   
   const Test = ({ props }: any) => {
     const sp: SPFI = getSP();
+ // Define proper interface that includes list item fields
+ interface IFileBasicInfo {
+  Name: string;
+  Length: number;
+  ServerRelativeUrl: string;
+  UniqueId: string;
+}
+async function getFilesBypassThreshold(
+  siteId: string,
+  folderServerRelativeUrl: string
+) {
+  try {
+    const site = await sp.site.openWebById(siteId);
+    const web = site.web;
+
+    // Get the list ID from folder metadata
+    const folder = web.getFolderByServerRelativePath(folderServerRelativeUrl);
+    const folderInfo: any = await folder
+      .expand("ListItemAllFields", "ListItemAllFields/ParentList")
+      .select("ListItemAllFields/ParentList/Id")();
+
+    const listId = folderInfo?.ListItemAllFields?.ParentList?.Id;
+    const list = web.lists.getById(listId); // FIXED: use list object, not just the ID
+
+    const renderOptions = {
+      ViewXml: `<View Scope='RecursiveAll'><Query></Query><RowLimit Paged='TRUE'>5000</RowLimit></View>`,
+      FolderServerRelativeUrl: folderServerRelativeUrl,
+    };
+
+    let allItems: any[] = [];
+    let position = null;
+
+    do {
+      const renderData: any = await list.renderListDataAsStream({
+        ...renderOptions,
+        Paging: position ? JSON.stringify({ Paged: "TRUE", p_ID: position }) : undefined,
+      });
+
+      allItems.push(...renderData.Row);
+      position = renderData.NextHref
+        ? new URLSearchParams(renderData.NextHref).get("p_ID")
+        : null;
+    } while (position);
+    console.log("✅ Total Items Fetched:", allItems);
+    console.log("✅ Total Items Fetched:", allItems.length);
+    return allItems;
+  } catch (err) {
+    console.error("❌ Error fetching files:", err);
+    return [];
+  }
+}
+// Call with:
+getFilesBypassThreshold(
+  "fb84b27e-1841-4114-8bef-1bd6c19cde19",
+  "/sites/Intranet/Group Information Technology Department/Archived Files/ARG_BO/EEE/Documents"
+);
+// async function getFilesBypassThreshold(
+//   siteId: string,
+//   folderServerRelativeUrl: string
+// ): Promise<IFileWithListItem[]> {
+//   try {
+//       const web = (await sp.site.openWebById(siteId)).web;
+//       const allFiles: IFileWithListItem[] = [];
+      
+//       // 1. First get the folder's item count
+//       const folder = await web.getFolderByServerRelativePath(folderServerRelativeUrl);
+//       const folderItem = await folder.listItemAllFields();
+//       const itemCount = folderItem.ItemCount || 0;
+
+//       // 2. If under threshold, get all at once
+//       if (itemCount <= 5000) {
+//           return folder.files.expand("listItemAllFields")
+//               .select("*, listItemAllFields/Id, listItemAllFields/FileRef")();
+//       }
+
+//       // 3. For large folders, use date-based chunking
+//       const dateRanges = await getDateRanges(web, folderServerRelativeUrl);
+      
+//       for (const range of dateRanges) {
+//           const files = await web.getFolderByServerRelativePath(folderServerRelativeUrl)
+//               .files
+//               .expand("listItemAllFields")
+//               .select("*, listItemAllFields/Id, listItemAllFields/FileRef")
+//               .filter(`Created ge datetime'${range.start}' and Created le datetime'${range.end}'`)
+//               .top(1000)
+//               .orderBy("Created", true)() as IFileWithListItem[];
+          
+//           allFiles.push(...files);
+//           await new Promise(resolve => setTimeout(resolve, 300)); // Throttle
+//       }
+
+//       return allFiles;
+//   } catch (error) {
+//       console.error("Error in getFilesBypassThreshold:", error);
+//       throw error;
+//   }
+// }
+// getFilesBypassThreshold("fb84b27e-1841-4114-8bef-1bd6c19cde19", "/sites/Intranet/Group Information Technology Department/Archived Files/ARG_BO/EEE/Documents")
+// async function getDateRanges(web: any, folderPath: string): Promise<{start: string, end: string}[]> {
+//   // Get min and max dates from the folder
+//   const result = await web.getFolderByServerRelativePath(folderPath)
+//       .files
+//       .select("Created")
+//       .top(1)
+//       .orderBy("Created", true)();
   
-   useEffect(()=>{
-
-const currentDate = new Date();
-
-const monthNumber = currentDate.getMonth() + 1;
-
-const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-];
-const monthName = monthNames[currentDate.getMonth()];
-
-console.log("Current Month Number:", monthNumber); 
-console.log("Current Month Name:", monthName); 
-
-async function eventthismonth () { 
-      const handleSubmitFiles = async () => {
-        // const folderAddResult = await sp.web.folders.addUsingPath(`/sites/SPFXDemo/ARGProjectsFiles/newfolder`);
-        // console.log(folderAddResult)
-        // alert(folderAddResult)
-        try {
-          let folderpath = '/sites/SPFXDemo/ARGProjectsFiles/newfolder';
-          
-          // Step 1: Create the folder
-          const folderAddResult = await sp.web.folders.addUsingPath(folderpath);
-          console.log(`Folder created at: ${folderpath}`);
-          
-          // Step 2: Break role inheritance and remove all unique permissions
-          const folderItem = await folderAddResult.folder.getItem();
-          await folderItem.breakRoleInheritance(true, false); // Break inheritance and clear existing permissions
-          
-          // // Fetch existing role assignments
-          // const roleAssignments = await folderItem.roleAssignments();
-        
-          // // Define a RoleDefId to remove, e.g., "Read" or "Contribute" (fetch RoleDefId if needed)
-          // const roleDefinitions = await sp.web.roleDefinitions();
-          // const readRoleDef = roleDefinitions.find((def:any) => def.Name === "Read");
-          // const roleDefId = readRoleDef ? readRoleDef.Id : null;
-          
-          // if (!roleDefId) {
-          //   throw new Error('Role definition ID not found.');
-          // }
-        
-          // // Iterate and remove each role assignment
-          // for (const roleAssignment of roleAssignments) {
-          //   const { PrincipalId } = roleAssignment;
-          //   await folderItem.roleAssignments.remove(PrincipalId, roleDefId);
-          // }
-        
-          // console.log(`Role inheritance broken and permissions cleared for: ${folderpath}`);
-        } catch (error) {
-          console.error("Error creating folder or modifying permissions:", error);
-        }
-        
-        };
-        handleSubmitFiles()
-   }
-   eventthismonth()
-
-
-})
-
-
-const [isPopupVisible, setPopupVisible] = useState(false);
-
-
-const togglePopup  =async () => {
-  const ids = window.location.search;
-const originalString = ids;
-const idNum = originalString.substring(1);
-alert(idNum)
-
-  const getdata :any= await sp.web.lists.getByTitle('ARGProject').items.getById(parseInt(idNum))()
-  console.log(getdata , "get data ")
-
-    if (getdata.FolderInProgress === null || getdata.FolderInProgress === "") {
-    
-      setPopupVisible(!isPopupVisible);
-    } else if (getdata.FolderInProgress === "In Progress") {
-    
-      Swal.fire({
-        title: 'Folder is in progress!',
-        text: 'Please wait until the process is complete.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
-    } else if (getdata.FolderInProgress === "Completed") {
-
-      Swal.fire({
-        title: 'Folder is already created!',
-        text: 'The folder has already been created.',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      });
-    }
-};
-
-  const [name, setName] = useState('');
-  const [Overview, setOverview] = useState('');
-
-
-  const UpdateItemAndCreateFolder = async (e:any) => {
-    e.preventDefault(); 
-
-
-    if (!name || !Overview) {
-
-      Swal.fire({
-        title: 'Error!',
-        text: 'Please fill in all required fields.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
-    } else {
-    
-      try {
-
-        console.log('Form submitted:', { name, Overview });
-        const ids = window.location.search;
-        const originalString = ids;
-        const idNum = originalString.substring(1);
-        console.log(name, "name" , Overview , "overview")
-        const updatedValues = {
+//   const minDate = new Date(result[0].Created);
+//   const maxDate = new Date();
   
-          ProjectFolderName : name,
-          FolderOverview: Overview,
-          FolderInProgress: "In Progress"
-        };
-    
-     
-         await sp.web.lists.getByTitle('ARGProject').items.getById(parseInt(idNum)).update(updatedValues);
-    
-        Swal.fire({
-          title: 'Success!',
-          text: 'The form was submitted successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
-        setPopupVisible(!isPopupVisible);
-      } catch (error) {
+//   // Create monthly chunks
+//   const ranges = [];
+//   let currentStart = minDate;
+  
+//   while (currentStart < maxDate) {
+//       const currentEnd = new Date(currentStart);
+//       currentEnd.setMonth(currentEnd.getMonth() + 1);
+      
+//       ranges.push({
+//           start: currentStart.toISOString(),
+//           end: currentEnd.toISOString()
+//       });
+      
+//       currentStart = new Date(currentEnd);
+//       currentStart.setDate(currentStart.getDate() + 1);
+//   }
+//   return ranges;
+// }
 
-        Swal.fire({
-          title: 'Error!',
-          text: 'Something went wrong. Please try again.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-        });
-      }
-    }
-  };
+// async function getAllFilesThresholdSafe(
+//   siteId: string,
+//   folderServerRelativeUrl: string
+// ): Promise<IFileWithListItem[]> {
+//   try {
+//       const web = (await sp.site.openWebById(siteId)).web;
+//       const allFiles: IFileWithListItem[] = [];
+//       let lastId = 0;
+//       let hasMore = true;
+//       const batchSize = 1000; // Conservative batch size
+
+//       while (hasMore) {
+//           const filter = lastId > 0 ? `ListItemAllFields/Id gt ${lastId}` : ``;
+          
+//           const files = await web.getFolderByServerRelativePath(folderServerRelativeUrl)
+//               .files
+//               .expand("ListItemAllFields") // Note: CamelCase in query but lowercase in response
+//               .select("*, ListItemAllFields/Id")
+//               .filter(filter)
+//               .top(batchSize)
+//               .orderBy("ListItemAllFields/Id", true)() as IFileWithListItem[];
+//           console.log("files all get", files);
+//           alert("files all get"+ files);
+//           if (files.length > 0) {
+//               allFiles.push(...files);
+//               lastId = files[files.length - 1].listItemAllFields.Id; // Note: lowercase in response
+//           } else {
+//               hasMore = false;
+//           }
+
+//           // Small delay between batches to avoid throttling
+//           if (hasMore) {
+//               await new Promise(resolve => setTimeout(resolve, 500));
+//           }
+//       }
+
+//       return allFiles;
+//   } catch (error) {
+//       console.error("Error in getAllFilesThresholdSafe:", error);
+//       throw error;
+//   }
+// }
+// getAllFilesThresholdSafe("fb84b27e-1841-4114-8bef-1bd6c19cde19", "/sites/Intranet/Group Information Technology Department/Archived Files/ARG_BO/EEE/Documents")
+    // async function getAllFilesFromFolderWithPaging(
+    //   siteId: string,
+    //   folderServerRelativeUrl: string
+    // ): Promise<any[]> {
+    //   try {
+    //     // Initialize the web using the site ID
+    //     const testidsub = sp.site.openWebById(siteId);
+    
+    //     // Get all files from the folder with paging to avoid threshold
+    //     const allFiles: any[] = [];
+    //     let files = await (await testidsub).web.getFolderByServerRelativePath(folderServerRelativeUrl)
+    //     .files
+    //     .expand("ListItemAllFields") // This is key to include the list item
+    //     .select("*, ListItemAllFields/Id")
+    //     .top(2000)
+    //     .orderBy("ListItemAllFields/Id", true)();
+    //      console.log("files all get", files);
+    //     while (files.length > 0) {
+    //       allFiles.push(...files);
+          
+    //       // Get the next batch using the ID of the last item in the current batch
+    //       const lastId = files[files.length - 1].ListItemAllFields.Id;
+    //       files = await (await testidsub).web.getFolderByServerRelativePath(folderServerRelativeUrl)
+    //         .files.select("*, ListItemAllFields")
+    //         .top(2000)
+    //         .filter(`ListItemAllFields/Id gt ${lastId}`)
+    //         .orderBy("ListItemAllFields/Id")();
+    //     }
+    
+    //     return allFiles;
+    //   } catch (error) {
+    //     console.error("Error fetching files:", error);
+    //     throw error;
+    //   }
+    // }
+    
+    // // Usage example
+    // const siteId = "fb84b27e-1841-4114-8bef-1bd6c19cde19";
+    // const folderPath = "/sites/Intranet/Group Information Technology Department/Archived Files/ARG_BO/EEE/Documents";
+    
+    // getAllFilesFromFolderWithPaging(siteId, folderPath)
+    //   .then(files => {
+    //     console.log(`Retrieved ${files.length} files`);
+    //     // Process your files here
+    //   })
+    //   .catch(error => {
+    //     console.error("Error:", error);
+    //   });
+  
     return (
       <div id="wrapper" >
           <p>Hello</p>
 
-  <button className="open-popup-btn" onClick={togglePopup}>
-        Open Popup
-      </button>
-          {isPopupVisible && (
-        <div className="popup">
-          <div className="popup-content">
-            <button className="close-btn" onClick={togglePopup}>
-              &times; {/* Cross mark */}
-            </button>
-            <h2>Popup Form</h2>
-            <form>
-              <label htmlFor="name">Folder Name:</label>
-              <input  type="text"
-        id="name"
-        name="name"
-        value={name}
-        onChange={(e) => setName(e.target.value)} />
-              <br />
-              <label htmlFor="Overview">Overview:</label>
-              <input  type="email"
-        id="Overview"
-        name="Overview"
-        value={Overview}
-        onChange={(e) => setOverview(e.target.value)} />
-              <br />
-              <button type="submit" onClick={UpdateItemAndCreateFolder}>Submit</button>
-            </form>
-          </div>
-        </div>
-      )}
+          <p>Test</p>
+          <p>Test</p>
+    
             </div>
           
      

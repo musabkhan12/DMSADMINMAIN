@@ -30,7 +30,7 @@ export default class DmsadminWebPart extends BaseClientSideWebPart<IDmsadminWebP
     const element: React.ReactElement<IDmsadminProps> = React.createElement(
       // Dmsadmin,
       //DMSMain,
-       DMSAdmin,
+        DMSAdmin,
       // DMSMyApproval,
       //  TEST,
       {

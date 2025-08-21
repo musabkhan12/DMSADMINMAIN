@@ -30,6 +30,7 @@
       "ES2016",
       "es5",
     "es2015",
+    "es2020",
       "dom",
       "es2015.collection",
       "es2015.promise"
